@@ -6,9 +6,11 @@ import { Separator } from "@/components/ui/separator";
 
 interface SearchResultsProps {
   query: string;
+  onDocumentOpen?: (document: any) => void;
+  onBackToSearch?: () => void;
 }
 
-const SearchResults = ({ query }: SearchResultsProps) => {
+const SearchResults = ({ query, onDocumentOpen, onBackToSearch }: SearchResultsProps) => {
   // Mock data for demonstration
   const aiAnswer = {
     text: "Based on your query about monsoon preparedness, there are 3 active safety circulars. The latest directive SC-2024-15 mandates drainage inspection at all stations before June 15th. Critical points include: waterlogging prevention measures, emergency contact protocols, and staff safety guidelines during heavy rainfall.",
@@ -54,6 +56,20 @@ const SearchResults = ({ query }: SearchResultsProps) => {
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
+      {/* Back to Search */}
+      <div className="flex items-center gap-4 mb-6">
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={onBackToSearch}
+          className="gap-2"
+        >
+          ← Back to Search
+        </Button>
+        <div className="text-sm text-muted-foreground">
+          Results for: <span className="font-medium text-foreground">"{query}"</span>
+        </div>
+      </div>
       {/* AI Generated Answer */}
       <Card className="p-6 border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
         <div className="space-y-4">
@@ -158,14 +174,24 @@ const SearchResults = ({ query }: SearchResultsProps) => {
 
               {/* Actions */}
               <div className="flex items-center justify-between pt-2">
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" className="text-xs">
-                    View Full Document
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-xs">
-                    View in K-Lens
-                  </Button>
-                </div>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-xs"
+                  onClick={() => onDocumentOpen?.(doc)}
+                >
+                  View Full Document
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-xs"
+                  onClick={() => onDocumentOpen?.(doc)}
+                >
+                  View in K-Lens
+                </Button>
+              </div>
                 
                 <Button variant="ghost" size="sm">
                   <ExternalLink className="h-3 w-3" />

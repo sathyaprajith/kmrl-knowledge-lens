@@ -1,57 +1,29 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Header from "@/components/Header";
-import Dashboard from "@/components/Dashboard";
 import SearchInterface from "@/components/SearchInterface";
 import SearchResults from "@/components/SearchResults";
 import DocumentViewer from "@/components/DocumentViewer";
 
-type View = "dashboard" | "search" | "results";
-
-const Index = () => {
-  const navigate = useNavigate();
-  const [currentView, setCurrentView] = useState<View>("dashboard");
+const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
   const [showDocViewer, setShowDocViewer] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    setCurrentView("results");
+    setShowResults(true);
   };
 
   const handleBackToSearch = () => {
-    setCurrentView("search");
-  };
-
-  const handleNavigateToSearch = () => {
-    navigate("/search");
+    setShowResults(false);
   };
 
   const handleDocumentOpen = (document: any) => {
     setSelectedDocument(document);
     setShowDocViewer(true);
-  };
-
-  const renderCurrentView = () => {
-    switch (currentView) {
-      case "dashboard":
-        return <Dashboard onNavigateToSearch={handleNavigateToSearch} />;
-      case "search":
-        return <SearchInterface onSearch={handleSearch} />;
-      case "results":
-        return (
-          <SearchResults 
-            query={searchQuery} 
-            onDocumentOpen={handleDocumentOpen}
-            onBackToSearch={handleBackToSearch}
-          />
-        );
-      default:
-        return <Dashboard onNavigateToSearch={handleNavigateToSearch} />;
-    }
   };
 
   return (
@@ -60,13 +32,11 @@ const Index = () => {
         <AppSidebar />
         
         <div className="flex-1 flex flex-col">
-          {/* Header with Sidebar Trigger */}
           <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-16 items-center justify-between px-4">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="h-8 w-8" />
                 
-                {/* Quick Search Bar */}
                 <div className="hidden md:flex flex-1 max-w-md">
                   <div className="relative w-full">
                     <input
@@ -87,15 +57,21 @@ const Index = () => {
             </div>
           </header>
 
-          {/* Main Content */}
           <main className="flex-1 overflow-auto">
             <div className="container mx-auto px-4 py-8">
-              {renderCurrentView()}
+              {!showResults ? (
+                <SearchInterface onSearch={handleSearch} />
+              ) : (
+                <SearchResults 
+                  query={searchQuery} 
+                  onDocumentOpen={handleDocumentOpen}
+                  onBackToSearch={handleBackToSearch}
+                />
+              )}
             </div>
           </main>
         </div>
 
-        {/* Document Viewer Modal */}
         <DocumentViewer
           isOpen={showDocViewer}
           onClose={() => setShowDocViewer(false)}
@@ -106,4 +82,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default SearchPage;

@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-const SearchInterface = () => {
+interface SearchInterfaceProps {
+  onSearch?: (query: string) => void;
+}
+
+const SearchInterface = ({ onSearch }: SearchInterfaceProps) => {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -12,7 +16,10 @@ const SearchInterface = () => {
     if (!query.trim()) return;
     setIsSearching(true);
     // Simulate search delay
-    setTimeout(() => setIsSearching(false), 2000);
+    setTimeout(() => {
+      setIsSearching(false);
+      onSearch?.(query);
+    }, 1500);
   };
 
   const suggestedQueries = [
@@ -97,7 +104,10 @@ const SearchInterface = () => {
               key={index}
               variant="outline"
               className="h-auto p-4 text-left justify-start hover:bg-muted/50"
-              onClick={() => setQuery(suggestion)}
+              onClick={() => {
+                setQuery(suggestion);
+                setTimeout(() => onSearch?.(suggestion), 100);
+              }}
             >
               <Search className="h-4 w-4 mr-3 text-muted-foreground flex-shrink-0" />
               <span className="text-sm">{suggestion}</span>
