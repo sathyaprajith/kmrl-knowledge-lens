@@ -4,9 +4,18 @@ import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, Clock, CheckCircle, XCircle, Bell } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { AlertCircle, Clock, CheckCircle, XCircle, Bell, Forward, Timer, TrendingUp, Share } from "lucide-react";
+import { useState } from "react";
 
 const AlertsPage = () => {
+  const [selectedAlert, setSelectedAlert] = useState(null);
+  const [forwardDialogOpen, setForwardDialogOpen] = useState(false);
+  
   const alerts = [
     {
       id: 1,
@@ -16,7 +25,9 @@ const AlertsPage = () => {
       priority: "Critical",
       time: "2 hours ago",
       status: "unread",
-      action: "Review Payment"
+      action: "Review Payment",
+      timeSaved: "45 min",
+      aiInsight: "AI identified potential duplicate payment risk"
     },
     {
       id: 2,
@@ -26,7 +37,9 @@ const AlertsPage = () => {
       priority: "High",
       time: "4 hours ago",
       status: "unread",
-      action: "Review & Distribute"
+      action: "Review & Distribute",
+      timeSaved: "1.2 hrs",
+      aiInsight: "Auto-categorized as critical safety update"
     },
     {
       id: 3,
@@ -36,7 +49,9 @@ const AlertsPage = () => {
       priority: "Medium",
       time: "6 hours ago",
       status: "read",
-      action: "Acknowledge"
+      action: "Acknowledge",
+      timeSaved: "20 min",
+      aiInsight: "Optimal scheduling based on historical data"
     },
     {
       id: 4,
@@ -46,7 +61,9 @@ const AlertsPage = () => {
       priority: "High",
       time: "1 day ago",
       status: "read",
-      action: "Approve"
+      action: "Approve",
+      timeSaved: "35 min",
+      aiInsight: "Pre-validated compliance requirements"
     },
     {
       id: 5,
@@ -56,7 +73,9 @@ const AlertsPage = () => {
       priority: "Low",
       time: "2 days ago",
       status: "read",
-      action: "View Report"
+      action: "View Report",
+      timeSaved: "15 min",
+      aiInsight: "Auto-verified backup integrity"
     }
   ];
 
@@ -103,7 +122,7 @@ const AlertsPage = () => {
                 </div>
 
                 {/* Alert Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                   <Card className="p-4">
                     <div className="flex items-center gap-3">
                       <div className="h-8 w-8 rounded-lg bg-destructive/10 flex items-center justify-center">
@@ -148,6 +167,17 @@ const AlertsPage = () => {
                       </div>
                     </div>
                   </Card>
+                  <Card className="p-4 bg-gradient-to-r from-primary/5 to-accent/5">
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Timer className="h-4 w-4 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-lg font-bold">4.2 hrs</p>
+                        <p className="text-sm text-muted-foreground">Time Saved Today</p>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
 
                 {/* Alerts List */}
@@ -173,6 +203,19 @@ const AlertsPage = () => {
                           
                           <p className="text-muted-foreground">{alert.description}</p>
                           
+                          {/* AI Insights & Time Saved */}
+                          <div className="flex items-center gap-4 p-3 bg-muted/30 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <TrendingUp className="h-4 w-4 text-primary" />
+                              <span className="text-sm font-medium">AI Insight:</span>
+                              <span className="text-sm text-muted-foreground">{alert.aiInsight}</span>
+                            </div>
+                            <div className="flex items-center gap-2 ml-auto">
+                              <Timer className="h-4 w-4 text-success" />
+                              <span className="text-sm font-medium text-success">Saved: {alert.timeSaved}</span>
+                            </div>
+                          </div>
+                          
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <Badge variant="outline">{alert.type}</Badge>
@@ -182,6 +225,61 @@ const AlertsPage = () => {
                               <Button variant="outline" size="sm">
                                 {alert.action}
                               </Button>
+                              <Dialog open={forwardDialogOpen && selectedAlert?.id === alert.id} onOpenChange={setForwardDialogOpen}>
+                                <DialogTrigger asChild>
+                                  <Button 
+                                    variant="outline" 
+                                    size="sm"
+                                    onClick={() => setSelectedAlert(alert)}
+                                  >
+                                    <Forward className="h-4 w-4 mr-1" />
+                                    Forward
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-md">
+                                  <DialogHeader>
+                                    <DialogTitle>Forward Alert</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4">
+                                    <div>
+                                      <Label htmlFor="recipient">Forward to</Label>
+                                      <Select>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="Select team member" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="operations">Operations Team</SelectItem>
+                                          <SelectItem value="maintenance">Maintenance Team</SelectItem>
+                                          <SelectItem value="safety">Safety Department</SelectItem>
+                                          <SelectItem value="finance">Finance Team</SelectItem>
+                                          <SelectItem value="manager">Department Manager</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="message">Additional Message</Label>
+                                      <Textarea 
+                                        id="message"
+                                        placeholder="Add a note for the recipient..."
+                                        className="min-h-[80px]"
+                                      />
+                                    </div>
+                                    <div className="flex justify-end gap-2">
+                                      <Button variant="outline" onClick={() => setForwardDialogOpen(false)}>
+                                        Cancel
+                                      </Button>
+                                      <Button onClick={() => {
+                                        // Handle forward logic here
+                                        setForwardDialogOpen(false);
+                                        setSelectedAlert(null);
+                                      }}>
+                                        <Share className="h-4 w-4 mr-1" />
+                                        Forward Alert
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
                               <Button variant="ghost" size="sm">
                                 Dismiss
                               </Button>
