@@ -1,15 +1,38 @@
-import { Bell, User, LogOut, UserPlus, Settings } from "lucide-react";
+import { Bell, User, LogOut, UserPlus, Settings, Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from '@/lib/auth';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { user, logout } = useAuth();
+  let theme, setTheme, isDark;
+  
+  try {
+    ({ theme, setTheme, isDark } = useTheme());
+  } catch (error) {
+    // Fallback if ThemeProvider is not available
+    theme = 'light';
+    setTheme = () => {};
+    isDark = false;
+  }
+  
   const displayName = user?.name ?? user?.email ?? 'Guest User';
   const department = user?.role ?? 'Guest';
   const navigate = useNavigate();
+
+  const getThemeIcon = () => {
+    switch (theme) {
+      case 'light':
+        return <Sun className="h-4 w-4" />;
+      case 'dark':
+        return <Moon className="h-4 w-4" />;
+      default:
+        return <Monitor className="h-4 w-4" />;
+    }
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -19,6 +42,34 @@ const Header = () => {
           3
         </Badge>
       </Button>
+
+      {/* Dark Mode Toggle */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" title="Toggle theme" aria-label="Toggle theme">
+            {getThemeIcon()}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuLabel>Theme</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setTheme('light')} className="flex items-center gap-2">
+            <Sun className="h-4 w-4" />
+            Light
+            {theme === 'light' && <div className="ml-auto h-2 w-2 rounded-full bg-blue-500" />}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('dark')} className="flex items-center gap-2">
+            <Moon className="h-4 w-4" />
+            Dark
+            {theme === 'dark' && <div className="ml-auto h-2 w-2 rounded-full bg-blue-500" />}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('system')} className="flex items-center gap-2">
+            <Monitor className="h-4 w-4" />
+            System
+            {theme === 'system' && <div className="ml-auto h-2 w-2 rounded-full bg-blue-500" />}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       
       <div className="flex items-center gap-2 ml-2">
         <div className="hidden sm:block text-right">

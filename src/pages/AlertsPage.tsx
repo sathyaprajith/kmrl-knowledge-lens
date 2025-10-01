@@ -735,8 +735,8 @@ const AlertsPage = () => {
             <div className="container mx-auto px-4 py-8">
               {/* Page Header */}
               <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900">Alerts & Compliance Dashboard</h1>
-                <p className="text-gray-600 mt-2">Monitor critical alerts, compliance deadlines, and document-driven risks</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Alerts & Compliance Dashboard</h1>
+                <p className="text-gray-600 dark:text-gray-300 mt-2">Monitor critical alerts, compliance deadlines, and document-driven risks</p>
               </div>
 
               {/* Tabs */}
@@ -777,12 +777,12 @@ const AlertsPage = () => {
                           <div className="flex space-x-1 overflow-x-auto flex-1 pb-2">
                             {calendarData.map((day, index) => (
                               <div key={index} className={`flex flex-col items-center p-2 sm:p-3 rounded-lg min-w-[50px] sm:min-w-[60px] text-center ${
-                                day.isToday ? 'bg-blue-100 border-2 border-blue-300' : 
-                                day.isHighlighted ? 'bg-red-100 border-2 border-red-300' : 
-                                'bg-gray-50 hover:bg-gray-100'
+                                day.isToday ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-300 dark:border-blue-600' : 
+                                day.isHighlighted ? 'bg-red-100 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-600' : 
+                                'bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
                               }`}>
-                                <span className="text-xs text-gray-600 mb-1">{day.dayName}</span>
-                                <span className={`text-sm sm:text-base font-bold ${day.isToday ? 'text-blue-700' : day.isHighlighted ? 'text-red-700' : 'text-gray-800'}`}>
+                                <span className="text-xs text-gray-600 dark:text-gray-400 mb-1">{day.dayName}</span>
+                                <span className={`text-sm sm:text-base font-bold ${day.isToday ? 'text-blue-700 dark:text-blue-300' : day.isHighlighted ? 'text-red-700 dark:text-red-300' : 'text-gray-800 dark:text-gray-200'}`}>
                                   {day.dayNumber}
                                 </span>
                                 {day.events > 0 && (
@@ -844,26 +844,26 @@ const AlertsPage = () => {
                       <div className="space-y-4">
                         {filteredAlerts.map((alert) => (
                           <Card key={alert.id} className={`p-6 border-l-4 ${
-                            alert.priority === 'HIGH' ? 'border-l-red-500 bg-red-50' : 'border-l-blue-500 bg-blue-50'
+                            alert.priority === 'HIGH' ? 'border-l-red-500 bg-red-50 dark:bg-red-950/20 dark:border-red-500' : 'border-l-blue-500 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-500'
                           }`}>
                             <div className="flex items-start justify-between">
                               <div className="flex-1 min-w-0">
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
                                   <div className="flex items-center gap-2 sm:gap-3">
-                                    <span className="text-xs sm:text-sm font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                                    <span className="text-xs sm:text-sm font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded flex-shrink-0">
                                       {alert.id}
                                     </span>
                                     <Badge 
                                       variant={alert.priority === 'HIGH' ? 'destructive' : 'secondary'}
-                                      className={`${alert.priority === 'HIGH' ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200'} flex-shrink-0`}
+                                      className={`${alert.priority === 'HIGH' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800'} flex-shrink-0`}
                                     >
                                       {alert.priority}
                                     </Badge>
                                   </div>
-                                  <h3 className="font-semibold text-base sm:text-lg text-gray-900 leading-tight">{alert.title}</h3>
+                                  <h3 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-gray-100 leading-tight">{alert.title}</h3>
                                 </div>
-                                <p className="text-gray-700 mb-4 leading-relaxed text-sm sm:text-base">{alert.description}</p>
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs sm:text-sm text-gray-600 mb-3">
+                                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed text-sm sm:text-base">{alert.description}</p>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3">
                                   <span className="flex items-center gap-2">
                                     <Building2 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                                     <span className="truncate">{alert.department}</span>
@@ -874,8 +874,8 @@ const AlertsPage = () => {
                                   </span>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 flex-shrink-0 mt-0.5" />
-                                  <span className="text-xs sm:text-sm text-gray-600 leading-relaxed">{alert.documentTitle}</span>
+                                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 dark:text-gray-400 flex-shrink-0 mt-0.5" />
+                                  <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{alert.documentTitle}</span>
                                 </div>
                               </div>
                               <div className="ml-0 sm:ml-6 mt-4 sm:mt-0">
@@ -893,24 +893,24 @@ const AlertsPage = () => {
                     <div className="space-y-6">
                       <Card className="p-4">
                         <div className="flex items-center gap-2 mb-4">
-                          <Clock className="h-5 w-5 text-blue-600" />
-                          <h3 className="font-semibold">Compliance Timeline</h3>
+                          <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100">Compliance Timeline</h3>
                         </div>
                         <div className="space-y-4">
                           {complianceTimeline.map((item) => (
-                            <div key={item.id} className="bg-gray-50 p-4 rounded-lg">
+                            <div key={item.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                               <div className="flex items-start gap-3 mb-2">
-                                <Clock className="h-4 w-4 text-blue-500 mt-1" />
+                                <Clock className="h-4 w-4 text-blue-500 dark:text-blue-400 mt-1" />
                                 <div className="flex-1">
-                                  <h4 className="font-semibold text-sm text-gray-900">{item.title}</h4>
-                                  <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                  <h4 className="font-semibold text-sm text-gray-900 dark:text-gray-100">{item.title}</h4>
+                                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{item.description}</p>
                                 </div>
                               </div>
                               <div className="flex items-center justify-between text-xs mt-3">
-                                <span className="text-gray-500">{item.department}</span>
-                                <span className="font-semibold text-blue-600">{item.daysLeft}d left</span>
+                                <span className="text-gray-500 dark:text-gray-400">{item.department}</span>
+                                <span className="font-semibold text-blue-600 dark:text-blue-400">{item.daysLeft}d left</span>
                               </div>
-                              <div className="text-xs text-gray-500 mt-1">{item.deadline}</div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.deadline}</div>
                             </div>
                           ))}
                         </div>

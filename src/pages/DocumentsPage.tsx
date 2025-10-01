@@ -127,7 +127,7 @@ Downloads: ${doc.downloads}`;
             <div className="container flex h-16 items-center justify-between px-4">
               <div className="flex items-center gap-4">
                 <SidebarTrigger className="h-8 w-8" />
-                <h1 className="text-xl font-semibold">Documents</h1>
+                <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Documents</h1>
               </div>
               <Header />
             </div>
@@ -176,7 +176,7 @@ Downloads: ${doc.downloads}`;
                     {/* Header */}
                     <div className="flex items-center justify-between">
                       <div>
-                        <h2 className="text-2xl font-bold">Document Library</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Document Library</h2>
                         <p className="text-muted-foreground">Browse and manage all KMRL documents</p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -225,13 +225,13 @@ Downloads: ${doc.downloads}`;
                         {documents.map((doc) => (
                           <div 
                             key={doc.id} 
-                            className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer"
+                            className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/40 transition-all duration-200 cursor-pointer"
                             onClick={() => handleViewDocument(doc)}
                           >
                             <div className="flex items-center gap-4">
                               <FileText className="h-8 w-8 text-primary" />
                               <div className="space-y-1">
-                                <h4 className="font-medium">{doc.title}</h4>
+                                <h4 className="font-medium text-gray-900 dark:text-gray-100">{doc.title}</h4>
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                   <span className="flex items-center gap-1">
                                     <Calendar className="h-3 w-3" />
@@ -291,7 +291,7 @@ Downloads: ${doc.downloads}`;
                       <Card className="p-6">
                         <div className="flex items-center justify-between mb-6">
                           <div>
-                            <h3 className="text-xl font-semibold">Processed Documents</h3>
+                            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Processed Documents</h3>
                             <p className="text-muted-foreground">Documents processed with text extraction and categorization</p>
                           </div>
                           <Badge variant="outline">{storedDocuments.length} Documents</Badge>
@@ -301,13 +301,13 @@ Downloads: ${doc.downloads}`;
                           {storedDocuments.map((doc) => (
                             <div 
                               key={doc.id} 
-                              className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer"
+                              className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/40 transition-all duration-200 cursor-pointer"
                               onClick={() => handleViewExtractedText(doc)}
                             >
                               <div className="flex items-center gap-4">
                                 <FileText className="h-8 w-8 text-blue-600" />
                                 <div className="space-y-1">
-                                  <h4 className="font-medium">{doc.filename}</h4>
+                                  <h4 className="font-medium text-gray-900 dark:text-gray-100">{doc.filename}</h4>
                                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                                     <span className="flex items-center gap-1">
                                       <Calendar className="h-3 w-3" />
@@ -382,9 +382,9 @@ Downloads: ${doc.downloads}`;
       {/* Document Viewer Modal */}
       {viewerOpen && selectedDocument && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">
+          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {selectedDocument.title || selectedDocument.filename || 'Document Viewer'}
               </h3>
               <Button variant="ghost" size="sm" onClick={closeViewer}>
@@ -396,9 +396,9 @@ Downloads: ${doc.downloads}`;
               {selectedDocument.title && !selectedDocument.filename && (
                 <div className="space-y-6">
                   {/* Document Header */}
-                  <div className="border-b pb-4">
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">{selectedDocument.title}</h4>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{selectedDocument.title}</h4>
+                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
                       <Badge variant="outline">{selectedDocument.type}</Badge>
                       <Badge 
                         variant={
@@ -416,19 +416,19 @@ Downloads: ${doc.downloads}`;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4 text-gray-500" />
-                        <strong className="text-gray-700">Department:</strong>
-                        <span className="text-gray-600">{selectedDocument.department}</span>
+                        <Building2 className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <strong className="text-gray-700 dark:text-gray-300">Department:</strong>
+                        <span className="text-gray-600 dark:text-gray-400">{selectedDocument.department}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-gray-500" />
-                        <strong className="text-gray-700">Author:</strong>
-                        <span className="text-gray-600">{selectedDocument.author}</span>
+                        <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <strong className="text-gray-700 dark:text-gray-300">Author:</strong>
+                        <span className="text-gray-600 dark:text-gray-400">{selectedDocument.author}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <strong className="text-gray-700">Date:</strong>
-                        <span className="text-gray-600">{new Date(selectedDocument.date).toLocaleDateString('en-US', { 
+                        <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <strong className="text-gray-700 dark:text-gray-300">Date:</strong>
+                        <span className="text-gray-600 dark:text-gray-400">{new Date(selectedDocument.date).toLocaleDateString('en-US', { 
                           year: 'numeric', 
                           month: 'long', 
                           day: 'numeric' 
@@ -437,22 +437,22 @@ Downloads: ${doc.downloads}`;
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-gray-500" />
-                        <strong className="text-gray-700">File Size:</strong>
-                        <span className="text-gray-600">{selectedDocument.size}</span>
+                        <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <strong className="text-gray-700 dark:text-gray-300">File Size:</strong>
+                        <span className="text-gray-600 dark:text-gray-400">{selectedDocument.size}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Download className="h-4 w-4 text-gray-500" />
-                        <strong className="text-gray-700">Downloads:</strong>
-                        <span className="text-gray-600">{selectedDocument.downloads} times</span>
+                        <Download className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                        <strong className="text-gray-700 dark:text-gray-300">Downloads:</strong>
+                        <span className="text-gray-600 dark:text-gray-400">{selectedDocument.downloads} times</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Document Description/Summary */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <strong className="text-gray-700 block mb-2">Document Summary:</strong>
-                    <p className="text-gray-600">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                    <strong className="text-gray-700 dark:text-gray-300 block mb-2">Document Summary:</strong>
+                    <p className="text-gray-600 dark:text-gray-400">
                       {selectedDocument.type === 'Safety Circular' && 
                         'This safety circular contains important guidelines and procedures for ensuring workplace safety and compliance with regulations.'
                       }
@@ -474,8 +474,8 @@ Downloads: ${doc.downloads}`;
               {selectedDocument.filename && selectedDocument.text && (
                 <div className="space-y-6">
                   {/* Document Header */}
-                  <div className="border-b pb-4">
-                    <h4 className="text-xl font-semibold text-gray-800 mb-2">{selectedDocument.filename}</h4>
+                  <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{selectedDocument.filename}</h4>
                     <div className="flex items-center gap-2">
                       <Badge variant="outline">
                         {selectedDocument.fileType?.split('/')[1]?.toUpperCase() || 'FILE'}
@@ -530,16 +530,16 @@ Downloads: ${doc.downloads}`;
                     <div className="space-y-3">
                       {selectedDocument.deadline && (
                         <div className="flex items-center gap-2">
-                          <AlertTriangle className="h-4 w-4 text-gray-500" />
-                          <strong className="text-gray-700">Deadline:</strong>
-                          <span className="text-gray-600">{selectedDocument.deadline}</span>
+                          <AlertTriangle className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                          <strong className="text-gray-700 dark:text-gray-300">Deadline:</strong>
+                          <span className="text-gray-600 dark:text-gray-400">{selectedDocument.deadline}</span>
                         </div>
                       )}
                       {selectedDocument.bulletPoints && (
                         <div className="flex items-center gap-2">
-                          <FileText className="h-4 w-4 text-gray-500" />
-                          <strong className="text-gray-700">Bullet Points:</strong>
-                          <span className="text-gray-600">{selectedDocument.bulletPoints.length} items</span>
+                          <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                          <strong className="text-gray-700 dark:text-gray-300">Bullet Points:</strong>
+                          <span className="text-gray-600 dark:text-gray-400">{selectedDocument.bulletPoints.length} items</span>
                         </div>
                       )}
                     </div>
@@ -547,8 +547,8 @@ Downloads: ${doc.downloads}`;
                   
                   {selectedDocument.bulletPoints && selectedDocument.bulletPoints.length > 0 && (
                     <div>
-                      <strong>Bullet Points:</strong>
-                      <ul className="list-disc list-inside mt-2 space-y-1">
+                      <strong className="text-gray-800 dark:text-gray-200">Bullet Points:</strong>
+                      <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700 dark:text-gray-300">
                         {selectedDocument.bulletPoints.map((point: string, index: number) => (
                           <li key={index}>{point}</li>
                         ))}
@@ -557,9 +557,9 @@ Downloads: ${doc.downloads}`;
                   )}
                   
                   <div>
-                    <strong>Extracted Text:</strong>
-                    <div className="mt-2 p-4 bg-gray-50 rounded-lg max-h-96 overflow-auto">
-                      <pre className="whitespace-pre-wrap text-sm">{selectedDocument.text || 'No text content available'}</pre>
+                    <strong className="text-gray-800 dark:text-gray-200">Extracted Text:</strong>
+                    <div className="mt-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg max-h-96 overflow-auto">
+                      <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">{selectedDocument.text || 'No text content available'}</pre>
                     </div>
                   </div>
                 </div>
@@ -584,9 +584,9 @@ Downloads: ${doc.downloads}`;
       {/* Filter Panel */}
       {filterOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">Filter Documents</h3>
+          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Filter Documents</h3>
               <Button variant="ghost" size="sm" onClick={() => setFilterOpen(false)}>
                 ✕
               </Button>
@@ -594,7 +594,7 @@ Downloads: ${doc.downloads}`;
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Department</label>
-                <select className="w-full p-2 border rounded-md">
+                <select className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-md">
                   <option value="">All Departments</option>
                   <option value="Safety">Safety</option>
                   <option value="Operations">Operations</option>
@@ -606,7 +606,7 @@ Downloads: ${doc.downloads}`;
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Document Type</label>
-                <select className="w-full p-2 border rounded-md">
+                <select className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-md">
                   <option value="">All Types</option>
                   <option value="Safety Circular">Safety Circular</option>
                   <option value="Protocol">Protocol</option>
@@ -616,7 +616,7 @@ Downloads: ${doc.downloads}`;
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Status</label>
-                <select className="w-full p-2 border rounded-md">
+                <select className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 rounded-md">
                   <option value="">All Status</option>
                   <option value="Active">Active</option>
                   <option value="Current">Current</option>

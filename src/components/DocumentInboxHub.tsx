@@ -797,13 +797,13 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high-risk':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800';
       case 'urgent':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-300 border-orange-200 dark:border-orange-800';
       case 'normal':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-700';
     }
   };
 
@@ -1001,7 +1001,7 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
           </div>
         ) : filteredDocuments.length === 0 ? (
           <div className="text-center py-8">
-            <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
             <p className="text-muted-foreground">No documents match your current filters</p>
           </div>
         ) : (
@@ -1009,7 +1009,7 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
             {filteredDocuments.map((doc) => (
               <div
                 key={doc.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer gap-3 sm:gap-0"
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/40 transition-all duration-200 cursor-pointer gap-3 sm:gap-0"
                 onClick={() => onDocumentSelect?.(doc.originalDoc || doc)}
               >
                 <div className="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0">
@@ -1017,7 +1017,7 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
                     {getPriorityIcon(doc.priority)}
                   </div>
                   <div className="space-y-2 flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-900 text-sm sm:text-base leading-tight">{doc.title}</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-gray-100 text-sm sm:text-base leading-tight">{doc.title}</h4>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className="flex items-center gap-1">
