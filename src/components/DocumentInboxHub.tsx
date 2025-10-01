@@ -309,6 +309,394 @@ export const DocumentInboxHub: React.FC<DocumentInboxHubProps> = ({
           author: 'Facilities Team',
           content: 'Monthly air conditioning maintenance schedule...',
           type: 'Maintenance Schedule'
+        },
+
+        // Additional Safety Department Documents
+        {
+          id: 'safety-004',
+          title: 'Emergency Response Protocol Update',
+          source: 'File Upload',
+          department: 'Safety',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 432000000).toISOString(),
+          author: 'Emergency Response Team',
+          content: 'Updated emergency response procedures for flooding scenarios...',
+          type: 'Protocol Document'
+        },
+        {
+          id: 'safety-005',
+          title: 'CCTV Coverage Report - All Stations',
+          source: 'Web Portal',
+          department: 'Safety',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 518400000).toISOString(),
+          author: 'Security Team',
+          content: 'Comprehensive CCTV coverage analysis and recommendations...',
+          type: 'Security Report'
+        },
+        {
+          id: 'safety-006',
+          title: 'First Aid Training Completion Report',
+          source: 'Email',
+          department: 'Safety',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 604800000).toISOString(),
+          author: 'Training Coordinator',
+          content: 'Monthly first aid training completion status for all staff...',
+          type: 'Training Report'
+        },
+        {
+          id: 'safety-007',
+          title: 'Platform Safety Barrier Inspection',
+          source: 'File Upload',
+          department: 'Safety',
+          language: 'English',
+          priority: 'high-risk',
+          date: new Date(Date.now() - 691200000).toISOString(),
+          author: 'Safety Inspector',
+          content: 'Quarterly inspection of platform safety barriers and gates...',
+          type: 'Inspection Report'
+        },
+
+        // Additional Legal Department Documents
+        {
+          id: 'legal-004',
+          title: 'Land Acquisition Documentation - Phase 3',
+          source: 'File Upload',
+          department: 'Legal',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 777600000).toISOString(),
+          author: 'Land Acquisition Team',
+          content: 'Legal documentation for Phase 3 expansion land acquisition...',
+          type: 'Land Document'
+        },
+        {
+          id: 'legal-005',
+          title: 'Insurance Policy Renewal Notice',
+          source: 'Email',
+          department: 'Legal',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 864000000).toISOString(),
+          author: 'Insurance Officer',
+          content: 'Annual insurance policy renewal for rolling stock and infrastructure...',
+          type: 'Insurance Document'
+        },
+        {
+          id: 'legal-006',
+          title: 'Regulatory Compliance Checklist Q3',
+          source: 'Web Portal',
+          department: 'Legal',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 950400000).toISOString(),
+          author: 'Compliance Officer',
+          content: 'Quarterly regulatory compliance verification checklist...',
+          type: 'Compliance Document'
+        },
+        {
+          id: 'legal-007',
+          title: 'Passenger Rights Information Update',
+          source: 'File Upload',
+          department: 'Legal',
+          language: 'Hybrid',
+          priority: 'normal',
+          date: new Date(Date.now() - 1036800000).toISOString(),
+          author: 'Legal Advisor',
+          content: 'വാടക പാസത്തിന്റെ പാസഞ്ചെര് റൈറ്റ്‌സ് അപ്ഡേറ്റ് - Passenger rights information update...',
+          type: 'Information Document'
+        },
+
+        // Additional HR Department Documents
+        {
+          id: 'hr-004',
+          title: 'Employee Attendance Analysis September',
+          source: 'File Upload',
+          department: 'HR',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 1123200000).toISOString(),
+          author: 'HR Analytics Team',
+          content: 'Monthly employee attendance patterns and analysis...',
+          type: 'Analytics Report'
+        },
+        {
+          id: 'hr-005',
+          title: 'Recruitment Drive - Technical Positions',
+          source: 'Email',
+          department: 'HR',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 1209600000).toISOString(),
+          author: 'Recruitment Team',
+          content: 'Open positions for signal engineers and maintenance technicians...',
+          type: 'Job Posting'
+        },
+        {
+          id: 'hr-006',
+          title: 'Employee Wellness Program Report',
+          source: 'Web Portal',
+          department: 'HR',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 1296000000).toISOString(),
+          author: 'Wellness Coordinator',
+          content: 'Quarterly employee wellness program participation and feedback...',
+          type: 'Wellness Report'
+        },
+        {
+          id: 'hr-007',
+          title: 'Salary Structure Revision Proposal',
+          source: 'File Upload',
+          department: 'HR',
+          language: 'English',
+          priority: 'high-risk',
+          date: new Date(Date.now() - 1382400000).toISOString(),
+          author: 'Compensation Team',
+          content: 'Annual salary structure revision based on market analysis...',
+          type: 'Compensation Document'
+        },
+
+        // Additional Finance Department Documents
+        {
+          id: 'finance-004',
+          title: 'Revenue Analysis Report Q3 2025',
+          source: 'File Upload',
+          department: 'Finance',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 1468800000).toISOString(),
+          author: 'Revenue Team',
+          content: 'Quarterly revenue analysis including ticket sales and commercial income...',
+          type: 'Revenue Report'
+        },
+        {
+          id: 'finance-005',
+          title: 'Cost Optimization Study - Energy Consumption',
+          source: 'Email',
+          department: 'Finance',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 1555200000).toISOString(),
+          author: 'Cost Analysis Team',
+          content: 'Study on reducing energy costs across all stations and operations...',
+          type: 'Cost Analysis'
+        },
+        {
+          id: 'finance-006',
+          title: 'Asset Depreciation Schedule Update',
+          source: 'Web Portal',
+          department: 'Finance',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 1641600000).toISOString(),
+          author: 'Asset Management',
+          content: 'Updated depreciation schedules for rolling stock and infrastructure...',
+          type: 'Asset Document'
+        },
+        {
+          id: 'finance-007',
+          title: 'Bank Reconciliation Report September',
+          source: 'File Upload',
+          department: 'Finance',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 1728000000).toISOString(),
+          author: 'Accounts Team',
+          content: 'Monthly bank reconciliation for all operational accounts...',
+          type: 'Financial Report'
+        },
+
+        // Additional Operations Department Documents
+        {
+          id: 'operations-004',
+          title: 'Train Schedule Optimization Study',
+          source: 'File Upload',
+          department: 'Operations',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 1814400000).toISOString(),
+          author: 'Operations Planning',
+          content: 'Analysis of current train schedules and optimization recommendations...',
+          type: 'Planning Document'
+        },
+        {
+          id: 'operations-005',
+          title: 'കേര്‍ന്നൽ സ്റ്റേഷന്‍ കൃത്രിമ പരിശോധന - Kernel Station Platform Inspection',
+          source: 'Email',
+          department: 'Operations',
+          language: 'Hybrid',
+          priority: 'normal',
+          date: new Date(Date.now() - 1900800000).toISOString(),
+          author: 'Platform Inspector',
+          content: 'കേര്‍ന്നൽ സ്റ്റേഷന്‍ പ്ലാറ്റ്‌ഫോം സുരക്ഷാ പരിശോധന - Platform safety inspection at Kernel Station...',
+          type: 'Inspection Report'
+        },
+        {
+          id: 'operations-006',
+          title: 'Customer Feedback Analysis Report',
+          source: 'Web Portal',
+          department: 'Operations',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 1987200000).toISOString(),
+          author: 'Customer Service Team',
+          content: 'Monthly analysis of passenger feedback and service improvement suggestions...',
+          type: 'Feedback Report'
+        },
+        {
+          id: 'operations-007',
+          title: 'Emergency Evacuation Drill Results',
+          source: 'File Upload',
+          department: 'Operations',
+          language: 'English',
+          priority: 'high-risk',
+          date: new Date(Date.now() - 2073600000).toISOString(),
+          author: 'Emergency Coordinator',
+          content: 'Results and analysis of quarterly emergency evacuation drills...',
+          type: 'Emergency Report'
+        },
+
+        // Additional IT Department Documents
+        {
+          id: 'it-004',
+          title: 'Cybersecurity Audit Report 2025',
+          source: 'File Upload',
+          department: 'IT',
+          language: 'English',
+          priority: 'high-risk',
+          date: new Date(Date.now() - 2160000000).toISOString(),
+          author: 'Security Auditor',
+          content: 'Annual cybersecurity audit findings and recommendations...',
+          type: 'Security Audit'
+        },
+        {
+          id: 'it-005',
+          title: 'Mobile App Performance Metrics',
+          source: 'Email',
+          department: 'IT',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 2246400000).toISOString(),
+          author: 'Mobile Development Team',
+          content: 'Monthly performance metrics for KMRL mobile application...',
+          type: 'Performance Report'
+        },
+        {
+          id: 'it-006',
+          title: 'Data Center Migration Plan',
+          source: 'Web Portal',
+          department: 'IT',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 2332800000).toISOString(),
+          author: 'Infrastructure Team',
+          content: 'Comprehensive plan for data center migration to cloud infrastructure...',
+          type: 'Migration Plan'
+        },
+        {
+          id: 'it-007',
+          title: 'Software License Audit Report',
+          source: 'File Upload',
+          department: 'IT',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 2419200000).toISOString(),
+          author: 'IT Compliance Officer',
+          content: 'Annual software license audit and compliance verification...',
+          type: 'Compliance Report'
+        },
+
+        // Additional Maintenance Department Documents
+        {
+          id: 'maintenance-004',
+          title: 'Rolling Stock Maintenance Schedule Q4',
+          source: 'File Upload',
+          department: 'Maintenance',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 2505600000).toISOString(),
+          author: 'Rolling Stock Team',
+          content: 'Quarterly maintenance schedule for all trains and coaches...',
+          type: 'Maintenance Schedule'
+        },
+        {
+          id: 'maintenance-005',
+          title: 'ട്രാക് മെയിന്റനൻസ് റിപ്പോർട്ട് - Track Maintenance Report',
+          source: 'Email',
+          department: 'Maintenance',
+          language: 'Hybrid',
+          priority: 'normal',
+          date: new Date(Date.now() - 2592000000).toISOString(),
+          author: 'Track Maintenance Team',
+          content: 'പാലക്കാട് മുതൽ കൊച്ചി വരെയുള്ള ട്രാക് മെയിന്റനൻസ് റിപ്പോർട്ട് - Track maintenance report from Palakkad to Kochi...',
+          type: 'Track Report'
+        },
+        {
+          id: 'maintenance-006',
+          title: 'Electrical System Overhaul Plan',
+          source: 'Web Portal',
+          department: 'Maintenance',
+          language: 'English',
+          priority: 'high-risk',
+          date: new Date(Date.now() - 2678400000).toISOString(),
+          author: 'Electrical Team',
+          content: 'Comprehensive electrical system overhaul plan for aging infrastructure...',
+          type: 'Overhaul Plan'
+        },
+        {
+          id: 'maintenance-007',
+          title: 'Spare Parts Inventory Management',
+          source: 'File Upload',
+          department: 'Maintenance',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 2764800000).toISOString(),
+          author: 'Inventory Manager',
+          content: 'Monthly inventory report for critical spare parts and components...',
+          type: 'Inventory Report'
+        },
+
+        // Cross-Department Documents
+        {
+          id: 'admin-001',
+          title: 'Annual Board Meeting Minutes',
+          source: 'File Upload',
+          department: 'Administrator',
+          language: 'English',
+          priority: 'high-risk',
+          date: new Date(Date.now() - 2851200000).toISOString(),
+          author: 'Board Secretary',
+          content: 'Minutes from annual board meeting covering strategic decisions...',
+          type: 'Meeting Minutes'
+        },
+        {
+          id: 'admin-002',
+          title: 'Stakeholder Communication Report',
+          source: 'Email',
+          department: 'Administrator',
+          language: 'English',
+          priority: 'normal',
+          date: new Date(Date.now() - 2937600000).toISOString(),
+          author: 'Communications Team',
+          content: 'Monthly report on stakeholder communications and public relations...',
+          type: 'Communication Report'
+        },
+        {
+          id: 'admin-003',
+          title: 'Environmental Impact Assessment Update',
+          source: 'Web Portal',
+          department: 'Administrator',
+          language: 'English',
+          priority: 'urgent',
+          date: new Date(Date.now() - 3024000000).toISOString(),
+          author: 'Environmental Team',
+          content: 'Updated environmental impact assessment for expansion projects...',
+          type: 'Environmental Report'
         }
       ];
 

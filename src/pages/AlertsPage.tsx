@@ -267,6 +267,352 @@ const AlertsPage = () => {
       status: "open",
       documentTitle: "Equipment Replacement Request",
       action: "Resolve"
+    },
+
+    // Additional Safety Department Alerts
+    {
+      id: "SA-004",
+      title: "Fire Safety Equipment Inspection Overdue",
+      description: "Annual fire safety equipment inspection for Edapally Station is 5 days overdue. Schedule immediately.",
+      department: "Safety",
+      timeAgo: "5 days ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Fire Safety Inspection Checklist",
+      action: "Resolve"
+    },
+    {
+      id: "SA-005",
+      title: "CCTV Camera Malfunction - Platform 3",
+      description: "Security camera on Platform 3 at Kalamassery Station has been offline for 12 hours.",
+      department: "Safety",
+      timeAgo: "12 hours ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "CCTV Maintenance Log",
+      action: "Resolve"
+    },
+    {
+      id: "SA-006",
+      title: "Emergency Lighting System Test Required",
+      description: "Monthly emergency lighting system test pending for all underground sections.",
+      department: "Safety",
+      timeAgo: "1 day ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Emergency Systems Test Protocol",
+      action: "Resolve"
+    },
+    {
+      id: "SA-007",
+      title: "Staff Safety Training Certification Expiry",
+      description: "15 safety personnel certifications expire within 2 weeks. Renewal training required.",
+      department: "Safety",
+      timeAgo: "3 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Safety Training Records",
+      action: "Resolve"
+    },
+
+    // Additional Legal Department Alerts
+    {
+      id: "LE-004",
+      title: "Insurance Claim Deadline Approaching",
+      description: "Insurance claim for equipment damage must be filed within 48 hours or coverage will be void.",
+      department: "Legal",
+      timeAgo: "6 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Insurance Claim Form IC-2025-089",
+      action: "Resolve"
+    },
+    {
+      id: "LE-005",
+      title: "Data Protection Compliance Review",
+      description: "Annual GDPR compliance review requires legal department input by October 10th.",
+      department: "Legal",
+      timeAgo: "2 days ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Data Protection Assessment",
+      action: "Resolve"
+    },
+    {
+      id: "LE-006",
+      title: "Land Lease Agreement Renewal Notice",
+      description: "Land lease agreement for Aluva depot expires in 30 days. Renewal negotiation required.",
+      department: "Legal",
+      timeAgo: "1 week ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Land Lease Agreement AL-2020-03",
+      action: "Resolve"
+    },
+    {
+      id: "LE-007",
+      title: "Vendor Contract Breach Investigation",
+      description: "Cleaning services contractor failed to meet SLA requirements. Legal action assessment needed.",
+      department: "Legal",
+      timeAgo: "3 days ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Contract Breach Report CLN-2025-02",
+      action: "Resolve"
+    },
+
+    // Additional HR Department Alerts
+    {
+      id: "HR-004",
+      title: "Employee Background Verification Pending",
+      description: "Background verification for 8 new hires pending completion before joining date.",
+      department: "HR",
+      timeAgo: "2 days ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Background Verification Checklist",
+      action: "Resolve"
+    },
+    {
+      id: "HR-005",
+      title: "Annual Leave Accumulation Alert",
+      description: "12 employees have exceeded maximum leave accumulation limits. Action required.",
+      department: "HR",
+      timeAgo: "4 hours ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Leave Balance Report",
+      action: "Resolve"
+    },
+    {
+      id: "HR-006",
+      title: "Medical Insurance Policy Renewal",
+      description: "Group medical insurance policy expires October 15th. Renewal documentation required.",
+      department: "HR",
+      timeAgo: "1 week ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Medical Insurance Policy MI-2024",
+      action: "Resolve"
+    },
+    {
+      id: "HR-007",
+      title: "Exit Interview Completion Pending",
+      description: "Exit interviews for 3 departed employees remain incomplete. HR follow-up required.",
+      department: "HR",
+      timeAgo: "5 days ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Exit Interview Forms",
+      action: "Resolve"
+    },
+
+    // Additional Finance Department Alerts
+    {
+      id: "FN-004",
+      title: "Bank Account Reconciliation Discrepancy",
+      description: "₹2.3 lakh discrepancy found in operational account reconciliation. Investigation required.",
+      department: "Finance",
+      timeAgo: "1 hour ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Bank Reconciliation Report Sept-2025",
+      action: "Resolve"
+    },
+    {
+      id: "FN-005",
+      title: "Petty Cash Audit Findings",
+      description: "Internal audit identified irregularities in petty cash management at 3 stations.",
+      department: "Finance",
+      timeAgo: "3 days ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Petty Cash Audit Report",
+      action: "Resolve"
+    },
+    {
+      id: "FN-006",
+      title: "Revenue Collection System Malfunction",
+      description: "Ticket vending machine at Ernakulam South not transmitting revenue data for 24 hours.",
+      department: "Finance",
+      timeAgo: "1 day ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Revenue System Error Log",
+      action: "Resolve"
+    },
+    {
+      id: "FN-007",
+      title: "Annual Financial Audit Preparation",
+      description: "External auditors require all financial documents ready by October 20th. Preparation ongoing.",
+      department: "Finance",
+      timeAgo: "1 week ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Annual Audit Checklist 2025",
+      action: "Resolve"
+    },
+
+    // Additional Operations Department Alerts
+    {
+      id: "OP-004",
+      title: "Train Delay Pattern Analysis Required",
+      description: "Line 1 showing 15% increase in delays during morning peak. Root cause analysis needed.",
+      department: "Operations",
+      timeAgo: "2 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Delay Analysis Report",
+      action: "Resolve"
+    },
+    {
+      id: "OP-005",
+      title: "Platform Overcrowding Safety Alert",
+      description: "Platform capacity exceeded during evening rush at Lissie Station. Safety measures required.",
+      department: "Operations",
+      timeAgo: "4 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Platform Capacity Monitor",
+      action: "Resolve"
+    },
+    {
+      id: "OP-006",
+      title: "Train Door Sensor Malfunction",
+      description: "Coach 3 of Train KM-07 reporting intermittent door sensor issues. Safety inspection required.",
+      department: "Operations",
+      timeAgo: "30 minutes ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Train Safety Log KM-07",
+      action: "Resolve"
+    },
+    {
+      id: "OP-007",
+      title: "Passenger Information System Update",
+      description: "Digital displays at 4 stations showing incorrect arrival times. System update required.",
+      department: "Operations",
+      timeAgo: "2 hours ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "PIS Maintenance Log",
+      action: "Resolve"
+    },
+
+    // Additional IT Department Alerts
+    {
+      id: "IT-004",
+      title: "Database Server Performance Critical",
+      description: "Primary database server CPU usage at 95% for 2 hours. Immediate optimization required.",
+      department: "IT",
+      timeAgo: "2 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Server Performance Monitor",
+      action: "Resolve"
+    },
+    {
+      id: "IT-005",
+      title: "Email Server Storage Capacity Warning",
+      description: "Email server storage at 88% capacity. Archive or expansion required within 48 hours.",
+      department: "IT",
+      timeAgo: "6 hours ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Storage Capacity Report",
+      action: "Resolve"
+    },
+    {
+      id: "IT-006",
+      title: "Mobile App Login Issues Reported",
+      description: "Multiple users reporting login failures on KMRL mobile app. Investigation required.",
+      department: "IT",
+      timeAgo: "1 hour ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Mobile App Error Log",
+      action: "Resolve"
+    },
+    {
+      id: "IT-007",
+      title: "Firewall Rule Configuration Update",
+      description: "New security requirements mandate firewall rule updates across all network segments.",
+      department: "IT",
+      timeAgo: "1 day ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Firewall Configuration Guide",
+      action: "Resolve"
+    },
+
+    // Additional Maintenance Department Alerts
+    {
+      id: "MN-004",
+      title: "Track Ballast Inspection Overdue",
+      description: "Track ballast inspection for Section C-7 is 10 days overdue. Safety compliance at risk.",
+      department: "Maintenance",
+      timeAgo: "10 days ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Track Inspection Schedule",
+      action: "Resolve"
+    },
+    {
+      id: "MN-005",
+      title: "Power Supply Unit Failure - Edapally",
+      description: "Backup power supply unit at Edapally Station failed during routine test. Replacement needed.",
+      department: "Maintenance",
+      timeAgo: "4 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Power System Maintenance Log",
+      action: "Resolve"
+    },
+    {
+      id: "MN-006",
+      title: "Tunnel Lighting Maintenance Required",
+      description: "12 LED fixtures in tunnel section between JLN Stadium and Kaloor require replacement.",
+      department: "Maintenance",
+      timeAgo: "1 day ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Tunnel Lighting Inventory",
+      action: "Resolve"
+    },
+    {
+      id: "MN-007",
+      title: "Coach Interior Deep Cleaning Overdue",
+      description: "Monthly deep cleaning for Coaches KM-15 to KM-20 is 5 days overdue. Schedule immediately.",
+      department: "Maintenance",
+      timeAgo: "5 days ago",
+      priority: "MEDIUM",
+      status: "open",
+      documentTitle: "Coach Cleaning Schedule",
+      action: "Resolve"
+    },
+
+    // Critical Cross-Department Alerts
+    {
+      id: "CR-001",
+      title: "Emergency Response Drill Coordination",
+      description: "Multi-department emergency response drill scheduled for October 5th requires coordination.",
+      department: "Safety",
+      timeAgo: "2 days ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Emergency Drill Coordination Plan",
+      action: "Resolve"
+    },
+    {
+      id: "CR-002",
+      title: "Service Disruption Communication",
+      description: "Planned maintenance disruption requires coordinated passenger communication across all channels.",
+      department: "Operations",
+      timeAgo: "6 hours ago",
+      priority: "HIGH",
+      status: "open",
+      documentTitle: "Service Disruption Communication Plan",
+      action: "Resolve"
     }
   ];
 
