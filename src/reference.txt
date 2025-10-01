@@ -1,0 +1,1457 @@
+import React, { useState, useRef } from "react";
+import { Document } from "@/entities/Document";
+import { UploadFile, InvokeLLM } from "@/integrations/Core";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { 
+  Upload as UploadIcon, 
+  FileText, 
+  Image, 
+  X, 
+  CheckCircle,
+  AlertCircle,
+  Loader2
+} from "lucide-react";
+
+import UploadZone from "../components/upload/UploadZone";
+import DocumentPreview from "../components/upload/DocumentPreview";
+
+export default function UploadPage() {
+  const navigate = useNavigate();
+  const [files, setFiles] = useState([]);
+  const [processing, setProcessing] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null);
+  const [currentDocument, setCurrentDocument] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (selectedFiles) => {
+    const validFiles = Array.from(selectedFiles).filter(file => 
+      file.type === 'application/pdf' || file.type.startsWith('image/') || 
+      file.type === 'application/msword' || file.type.includes('document')
+    );
+    
+    if (validFiles.length === 0) {
+      setError("Please select valid document files (PDF, images, or Word documents)");
+      return;
+    }
+    
+    setFiles(validFiles);
+    setError(null);
+  };
+
+  const removeFile = (index) => {
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const processDocument = async (file) => {
+    setProcessing(true);
+    setProgress(0);
+    setError(null);
+
+    try {
+      // Upload file
+      setProgress(20);
+      const { file_url } = await UploadFile({ file });
+
+      // Process with AI
+      setProgress(50);
+      const aiResponse = await InvokeLLM({
+        prompt: `Please analyze this document and extract the following information:
+        - Title or main subject
+        - Department it belongs to (engineering, maintenance, operations, finance, hr, procurement, safety, legal, executive, general)
+        - Document type (engineering_drawing, maintenance_report, incident_report, invoice, purchase_order, regulatory_directive, safety_circular, policy, meeting_minutes, correspondence, other)
+        - Language (english, malayalam, bilingual)
+        - Priority level (low, medium, high, urgent)
+        - A detailed summary of the content
+        - Extract any action items with descriptions, responsible departments, deadlines, and priorities
+        - Key insights or important points
+        - Relevant tags for searchability
+        - Any compliance deadline mentioned
+
+        Provide detailed and accurate information based on the document content.`,
+        file_urls: [file_url],
+        response_json_schema: {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+            department: { 
+              type: "string",
+              enum: ["engineering", "maintenance", "operations", "finance", "hr", "procurement", "safety", "legal", "executive", "general"]
+            },
+            document_type: {
+              type: "string", 
+              enum: ["engineering_drawing", "maintenance_report", "incident_report", "invoice", "purchase_order", "regulatory_directive", "safety_circular", "policy", "meeting_minutes", "correspondence", "other"]
+            },
+            language: {
+              type: "string",
+              enum: ["english", "malayalam", "bilingual"]
+            },
+            priority: {
+              type: "string",
+              enum: ["low", "medium", "high", "urgent"]
+            },
+            content_summary: { type: "string" },
+            action_items: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  description: { type: "string" },
+                  department: { type: "string" },
+                  deadline: { type: "string" },
+                  priority: { type: "string", enum: ["low", "medium", "high", "urgent"] }
+                }
+              }
+            },
+            key_insights: {
+              type: "array",
+              items: { type: "string" }
+            },
+            tags: {
+              type: "array", 
+              items: { type: "string" }
+            },
+            compliance_deadline: { type: "string" }
+          }
+        }
+      });
+
+      setProgress(90);
+
+      const documentData = {
+        ...aiResponse,
+        file_url,
+        original_filename: file.name,
+        source: "upload"
+      };
+
+      setCurrentDocument(documentData);
+      setProgress(100);
+    } catch (error) {
+      setError(`Error processing document: ${error.message}`);
+      console.error("Document processing error:", error);
+    }
+    
+    setProcessing(false);
+  };
+
+  const saveDocument = async (documentData) => {
+    try {
+      await Document.create(documentData);
+      navigate(createPageUrl("Dashboard"));
+    } catch (error) {
+      setError(`Error saving document: ${error.message}`);
+    }
+  };
+
+  return (
+    <div className="p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Upload Document</h1>
+          <p className="text-gray-600">Upload and automatically process documents for KMRL</p>
+        </div>
+
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {!currentDocument ? (
+          <div className="space-y-6">
+            {/* Upload Zone */}
+            <Card className="kmrl-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <UploadIcon className="w-5 h-5" />
+                  Select Documents
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <UploadZone 
+                  onFileSelect={handleFileSelect}
+                  ref={fileInputRef}
+                />
+              </CardContent>
+            </Card>
+
+            {/* File List */}
+            {files.length > 0 && (
+              <Card className="kmrl-card">
+                <CardHeader>
+                  <CardTitle>Selected Files ({files.length})</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 mb-6">
+                    {files.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          {file.type === 'application/pdf' ? (
+                            <FileText className="w-6 h-6 text-red-500" />
+                          ) : (
+                            <Image className="w-6 h-6 text-blue-500" />
+                          )}
+                          <div>
+                            <p className="font-medium text-gray-900">{file.name}</p>
+                            <p className="text-sm text-gray-500">
+                              {(file.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(index)}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {processing ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-center py-8">
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                        <span className="ml-3 text-gray-600">Processing document...</span>
+                      </div>
+                      <Progress value={progress} className="h-2" />
+                      <p className="text-sm text-gray-500 text-center">
+                        Analyzing content and extracting key information
+                      </p>
+                    </div>
+                  ) : (
+                    <Button 
+                      className="w-full kmrl-gradient text-white"
+                      onClick={() => processDocument(files[0])}
+                      disabled={files.length === 0}
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      Process Document
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        ) : (
+          <DocumentPreview
+            documentData={currentDocument}
+            onSave={saveDocument}
+            onCancel={() => {
+              setCurrentDocument(null);
+              setFiles([]);
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Upload, FileText, Image } from "lucide-react";
+
+export default function UploadZone({ onFileSelect }) {
+  const [isDragActive, setIsDragActive] = useState(false);
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragIn = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(true);
+  };
+
+  const handleDragOut = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      onFileSelect(files);
+    }
+  };
+
+  const handleFileInput = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      onFileSelect(e.target.files);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <input
+        type="file"
+        multiple
+        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+        onChange={handleFileInput}
+        className="hidden"
+        id="file-upload"
+      />
+      
+      <div
+        className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-200 ${
+          isDragActive
+            ? "border-blue-400 bg-blue-50"
+            : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+        }`}
+        onDragEnter={handleDragIn}
+        onDragLeave={handleDragOut}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <div className="space-y-4">
+          <div className="flex justify-center space-x-4">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <FileText className="w-8 h-8 text-blue-600" />
+            </div>
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <Image className="w-8 h-8 text-green-600" />
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Upload Your Documents
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Drag and drop files here, or click to select files
+            </p>
+          </div>
+
+          <label htmlFor="file-upload">
+            <Button className="kmrl-gradient text-white" asChild>
+              <span className="cursor-pointer">
+                <Upload className="w-5 h-5 mr-2" />
+                Select Files
+              </span>
+            </Button>
+          </label>
+
+          <p className="text-sm text-gray-500">
+            Supported formats: PDF, Word documents, Images (PNG, JPG)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CheckCircle, X, Plus, Trash2 } from "lucide-react";
+
+const DEPARTMENTS = [
+  "engineering", "maintenance", "operations", "finance", "hr", 
+  "procurement", "safety", "legal", "executive", "general"
+];
+
+const DOCUMENT_TYPES = [
+  "engineering_drawing", "maintenance_report", "incident_report", "invoice", 
+  "purchase_order", "regulatory_directive", "safety_circular", "policy", 
+  "meeting_minutes", "correspondence", "other"
+];
+
+const PRIORITIES = ["low", "medium", "high", "urgent"];
+const LANGUAGES = ["english", "malayalam", "bilingual"];
+
+export default function DocumentPreview({ documentData, onSave, onCancel }) {
+  const [editedData, setEditedData] = useState(documentData);
+
+  const handleInputChange = (field, value) => {
+    setEditedData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleActionItemChange = (index, field, value) => {
+    const newActionItems = [...(editedData.action_items || [])];
+    newActionItems[index] = {
+      ...newActionItems[index],
+      [field]: value
+    };
+    setEditedData(prev => ({
+      ...prev,
+      action_items: newActionItems
+    }));
+  };
+
+  const addActionItem = () => {
+    const newActionItems = [...(editedData.action_items || []), {
+      description: "",
+      department: "general",
+      deadline: "",
+      priority: "medium"
+    }];
+    setEditedData(prev => ({
+      ...prev,
+      action_items: newActionItems
+    }));
+  };
+
+  const removeActionItem = (index) => {
+    const newActionItems = editedData.action_items.filter((_, i) => i !== index);
+    setEditedData(prev => ({
+      ...prev,
+      action_items: newActionItems
+    }));
+  };
+
+  const handleKeyInsightChange = (index, value) => {
+    const newInsights = [...(editedData.key_insights || [])];
+    newInsights[index] = value;
+    setEditedData(prev => ({
+      ...prev,
+      key_insights: newInsights
+    }));
+  };
+
+  const addKeyInsight = () => {
+    const newInsights = [...(editedData.key_insights || []), ""];
+    setEditedData(prev => ({
+      ...prev,
+      key_insights: newInsights
+    }));
+  };
+
+  const removeKeyInsight = (index) => {
+    const newInsights = editedData.key_insights.filter((_, i) => i !== index);
+    setEditedData(prev => ({
+      ...prev,
+      key_insights: newInsights
+    }));
+  };
+
+  return (
+    <Card className="kmrl-card">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <CheckCircle className="w-5 h-5 text-green-600" />
+          Review & Edit Document Details
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Basic Information */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="title">Document Title</Label>
+            <Input
+              id="title"
+              value={editedData.title || ""}
+              onChange={(e) => handleInputChange("title", e.target.value)}
+              placeholder="Enter document title"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="department">Department</Label>
+            <Select
+              value={editedData.department || ""}
+              onValueChange={(value) => handleInputChange("department", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select department" />
+              </SelectTrigger>
+              <SelectContent>
+                {DEPARTMENTS.map(dept => (
+                  <SelectItem key={dept} value={dept}>
+                    {dept.charAt(0).toUpperCase() + dept.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="document_type">Document Type</Label>
+            <Select
+              value={editedData.document_type || ""}
+              onValueChange={(value) => handleInputChange("document_type", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select document type" />
+              </SelectTrigger>
+              <SelectContent>
+                {DOCUMENT_TYPES.map(type => (
+                  <SelectItem key={type} value={type}>
+                    {type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="priority">Priority</Label>
+            <Select
+              value={editedData.priority || ""}
+              onValueChange={(value) => handleInputChange("priority", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select priority" />
+              </SelectTrigger>
+              <SelectContent>
+                {PRIORITIES.map(priority => (
+                  <SelectItem key={priority} value={priority}>
+                    {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="language">Language</Label>
+            <Select
+              value={editedData.language || ""}
+              onValueChange={(value) => handleInputChange("language", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map(lang => (
+                  <SelectItem key={lang} value={lang}>
+                    {lang.charAt(0).toUpperCase() + lang.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="compliance_deadline">Compliance Deadline</Label>
+            <Input
+              id="compliance_deadline"
+              type="date"
+              value={editedData.compliance_deadline || ""}
+              onChange={(e) => handleInputChange("compliance_deadline", e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Content Summary */}
+        <div className="space-y-2">
+          <Label htmlFor="content_summary">Content Summary</Label>
+          <Textarea
+            id="content_summary"
+            value={editedData.content_summary || ""}
+            onChange={(e) => handleInputChange("content_summary", e.target.value)}
+            placeholder="Enter document summary"
+            className="min-h-[100px]"
+          />
+        </div>
+
+        {/* Action Items */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Label>Action Items</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addActionItem}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Item
+            </Button>
+          </div>
+          
+          <div className="space-y-3">
+            {editedData.action_items?.map((item, index) => (
+              <div key={index} className="p-4 border rounded-lg bg-gray-50">
+                <div className="grid md:grid-cols-2 gap-4 mb-3">
+                  <Input
+                    value={item.description || ""}
+                    onChange={(e) => handleActionItemChange(index, "description", e.target.value)}
+                    placeholder="Action description"
+                  />
+                  <div className="flex gap-2">
+                    <Select
+                      value={item.department || ""}
+                      onValueChange={(value) => handleActionItemChange(index, "department", value)}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Dept" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DEPARTMENTS.map(dept => (
+                          <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeActionItem(index)}
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <Input
+                    type="date"
+                    value={item.deadline || ""}
+                    onChange={(e) => handleActionItemChange(index, "deadline", e.target.value)}
+                    placeholder="Deadline"
+                  />
+                  <Select
+                    value={item.priority || ""}
+                    onValueChange={(value) => handleActionItemChange(index, "priority", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PRIORITIES.map(priority => (
+                        <SelectItem key={priority} value={priority}>{priority}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Key Insights */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Label>Key Insights</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addKeyInsight}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Insight
+            </Button>
+          </div>
+          
+          <div className="space-y-2">
+            {editedData.key_insights?.map((insight, index) => (
+              <div key={index} className="flex gap-2">
+                <Input
+                  value={insight}
+                  onChange={(e) => handleKeyInsightChange(index, e.target.value)}
+                  placeholder="Key insight"
+                  className="flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeKeyInsight(index)}
+                >
+                  <Trash2 className="w-4 h-4 text-red-500" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tags */}
+        <div className="space-y-2">
+          <Label htmlFor="tags">Tags (comma-separated)</Label>
+          <Input
+            id="tags"
+            value={editedData.tags?.join(", ") || ""}
+            onChange={(e) => handleInputChange("tags", e.target.value.split(",").map(tag => tag.trim()))}
+            placeholder="Enter tags separated by commas"
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex justify-end gap-3 pt-6">
+          <Button variant="outline" onClick={onCancel}>
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button 
+            onClick={() => onSave(editedData)}
+            className="kmrl-gradient text-white"
+          >
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Save Document
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+
+
+
+
+
+
+
+
+mport React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Upload, FileText, Image } from "lucide-react";
+
+export default function UploadZone({ onFileSelect }) {
+  const [isDragActive, setIsDragActive] = useState(false);
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragIn = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(true);
+  };
+
+  const handleDragOut = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      onFileSelect(files);
+    }
+  };
+
+  const handleFileInput = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      onFileSelect(e.target.files);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <input
+        type="file"
+        multiple
+        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+        onChange={handleFileInput}
+        className="hidden"
+        id="file-upload"
+      />
+      
+      <div
+        className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-200 ${
+          isDragActive
+            ? "border-blue-400 bg-blue-50"
+            : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+        }`}
+        onDragEnter={handleDragIn}
+        onDragLeave={handleDragOut}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <div className="space-y-4">
+          <div className="flex justify-center space-x-4">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <FileText className="w-8 h-8 text-blue-600" />
+            </div>
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <Image className="w-8 h-8 text-green-600" />
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Upload Your Documents
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Drag and drop files here, or click to select files
+            </p>
+          </div>
+
+          <label htmlFor="file-upload">
+            <Button className="kmrl-gradient text-white" asChild>
+              <span className="cursor-pointer">
+                <Upload className="w-5 h-5 mr-2" />
+                Select Files
+              </span>
+            </Button>
+          </label>
+
+          <p className="text-sm text-gray-500">
+            Supported formats: PDF, Word documents, Images (PNG, JPG)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CheckCircle, X, Plus, Trash2 } from "lucide-react";
+
+const DEPARTMENTS = [
+  "engineering", "maintenance", "operations", "finance", "hr", 
+  "procurement", "safety", "legal", "executive", "general"
+];
+
+const DOCUMENT_TYPES = [
+  "engineering_drawing", "maintenance_report", "incident_report", "invoice", 
+  "purchase_order", "regulatory_directive", "safety_circular", "policy", 
+  "meeting_minutes", "correspondence", "site_photo", "incident_photo", "other"
+];
+
+const PRIORITIES = ["low", "medium", "high", "urgent"];
+const LANGUAGES = ["english", "malayalam", "bilingual", "n/a"];
+
+export default function DocumentPreview({ documentData, onSave, onCancel }) {
+  const [editedData, setEditedData] = useState(documentData);
+
+  const handleInputChange = (field, value) => {
+    setEditedData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleActionItemChange = (index, field, value) => {
+    const newActionItems = [...(editedData.action_items || [])];
+    newActionItems[index] = {
+      ...newActionItems[index],
+      [field]: value
+    };
+    setEditedData(prev => ({
+      ...prev,
+      action_items: newActionItems
+    }));
+  };
+
+  const addActionItem = () => {
+    const newActionItems = [...(editedData.action_items || []), {
+      description: "",
+      department: "general",
+      deadline: "",
+      priority: "medium"
+    }];
+    setEditedData(prev => ({
+      ...prev,
+      action_items: newActionItems
+    }));
+  };
+
+  const removeActionItem = (index) => {
+    const newActionItems = editedData.action_items.filter((_, i) => i !== index);
+    setEditedData(prev => ({
+      ...prev,
+      action_items: newActionItems
+    }));
+  };
+
+  const handleKeyInsightChange = (index, value) => {
+    const newInsights = [...(editedData.key_insights || [])];
+    newInsights[index] = value;
+    setEditedData(prev => ({
+      ...prev,
+      key_insights: newInsights
+    }));
+  };
+
+  const addKeyInsight = () => {
+    const newInsights = [...(editedData.key_insights || []), ""];
+    setEditedData(prev => ({
+      ...prev,
+      key_insights: newInsights
+    }));
+  };
+
+  const removeKeyInsight = (index) => {
+    const newInsights = editedData.key_insights.filter((_, i) => i !== index);
+    setEditedData(prev => ({
+      ...prev,
+      key_insights: newInsights
+    }));
+  };
+
+  return (
+    <Card className="kmrl-card">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <CheckCircle className="w-5 h-5 text-green-600" />
+          Review & Edit Document Details
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Basic Information */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="title">Document Title</Label>
+            <Input
+              id="title"
+              value={editedData.title || ""}
+              onChange={(e) => handleInputChange("title", e.target.value)}
+              placeholder="Enter document title"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="department">Department</Label>
+            <Select
+              value={editedData.department || ""}
+              onValueChange={(value) => handleInputChange("department", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select department" />
+              </SelectTrigger>
+              <SelectContent>
+                {DEPARTMENTS.map(dept => (
+                  <SelectItem key={dept} value={dept}>
+                    {dept.charAt(0).toUpperCase() + dept.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="document_type">Document Type</Label>
+            <Select
+              value={editedData.document_type || ""}
+              onValueChange={(value) => handleInputChange("document_type", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select document type" />
+              </SelectTrigger>
+              <SelectContent>
+                {DOCUMENT_TYPES.map(type => (
+                  <SelectItem key={type} value={type}>
+                    {type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="priority">Priority</Label>
+            <Select
+              value={editedData.priority || ""}
+              onValueChange={(value) => handleInputChange("priority", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select priority" />
+              </SelectTrigger>
+              <SelectContent>
+                {PRIORITIES.map(priority => (
+                  <SelectItem key={priority} value={priority}>
+                    {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="language">Language</Label>
+            <Select
+              value={editedData.language || ""}
+              onValueChange={(value) => handleInputChange("language", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map(lang => (
+                  <SelectItem key={lang} value={lang}>
+                    {lang.charAt(0).toUpperCase() + lang.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="compliance_deadline">Compliance Deadline</Label>
+            <Input
+              id="compliance_deadline"
+              type="date"
+              value={editedData.compliance_deadline || ""}
+              onChange={(e) => handleInputChange("compliance_deadline", e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Content Summary */}
+        <div className="space-y-2">
+          <Label htmlFor="content_summary">Content Summary</Label>
+          <Textarea
+            id="content_summary"
+            value={editedData.content_summary || ""}
+            onChange={(e) => handleInputChange("content_summary", e.target.value)}
+            placeholder="Enter document summary"
+            className="min-h-[100px]"
+          />
+        </div>
+
+        {/* Action Items */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Label>Action Items</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addActionItem}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Item
+            </Button>
+          </div>
+          
+          <div className="space-y-3">
+            {editedData.action_items?.map((item, index) => (
+              <div key={index} className="p-4 border rounded-lg bg-gray-50">
+                <div className="grid md:grid-cols-2 gap-4 mb-3">
+                  <Input
+                    value={item.description || ""}
+                    onChange={(e) => handleActionItemChange(index, "description", e.target.value)}
+                    placeholder="Action description"
+                  />
+                  <div className="flex gap-2">
+                    <Select
+                      value={item.department || ""}
+                      onValueChange={(value) => handleActionItemChange(index, "department", value)}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Dept" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DEPARTMENTS.map(dept => (
+                          <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeActionItem(index)}
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <Input
+                    type="date"
+                    value={item.deadline || ""}
+                    onChange={(e) => handleActionItemChange(index, "deadline", e.target.value)}
+                    placeholder="Deadline"
+                  />
+                  <Select
+                    value={item.priority || ""}
+                    onValueChange={(value) => handleActionItemChange(index, "priority", value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PRIORITIES.map(priority => (
+                        <SelectItem key={priority} value={priority}>{priority}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Key Insights */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Label>Key Insights</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addKeyInsight}
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Insight
+            </Button>
+          </div>
+          
+          <div className="space-y-2">
+            {editedData.key_insights?.map((insight, index) => (
+              <div key={index} className="flex gap-2">
+                <Input
+                  value={insight}
+                  onChange={(e) => handleKeyInsightChange(index, e.target.value)}
+                  placeholder="Key insight"
+                  className="flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeKeyInsight(index)}
+                >
+                  <Trash2 className="w-4 h-4 text-red-500" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tags */}
+        <div className="space-y-2">
+          <Label htmlFor="tags">Tags (comma-separated)</Label>
+          <Input
+            id="tags"
+            value={editedData.tags?.join(", ") || ""}
+            onChange={(e) => handleInputChange("tags", e.target.value.split(",").map(tag => tag.trim()))}
+            placeholder="Enter tags separated by commas"
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex justify-end gap-3 pt-6">
+          <Button variant="outline" onClick={onCancel}>
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button 
+            onClick={() => onSave(editedData)}
+            className="kmrl-gradient text-white"
+          >
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Save Document
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+
+
+
+
+
+
+
+import React, { useState, useRef } from "react";
+import { Document } from "@/entities/Document";
+import { UploadFile, InvokeLLM } from "@/integrations/Core";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { 
+  Upload as UploadIcon, 
+  FileText, 
+  Image, 
+  X, 
+  CheckCircle,
+  AlertCircle,
+  Loader2
+} from "lucide-react";
+
+import UploadZone from "../components/upload/UploadZone";
+import DocumentPreview from "../components/upload/DocumentPreview";
+
+export default function UploadPage() {
+  const navigate = useNavigate();
+  const [files, setFiles] = useState([]);
+  const [processing, setProcessing] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null);
+  const [currentDocument, setCurrentDocument] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileSelect = (selectedFiles) => {
+    const validFiles = Array.from(selectedFiles).filter(file => 
+      file.type === 'application/pdf' || file.type.startsWith('image/') || 
+      file.type === 'application/msword' || file.type.includes('document')
+    );
+    
+    if (validFiles.length === 0) {
+      setError("Please select valid document files (PDF, images, or Word documents)");
+      return;
+    }
+    
+    setFiles(validFiles);
+    setError(null);
+  };
+
+  const removeFile = (index) => {
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const processDocument = async (file) => {
+    setProcessing(true);
+    setProgress(0);
+    setError(null);
+
+    try {
+      // Upload file
+      setProgress(20);
+      const { file_url } = await UploadFile({ file });
+
+      // Process with AI
+      setProgress(50);
+      const aiResponse = await InvokeLLM({
+        prompt: `Analyze the attached file. 
+        - If it is a document (like a PDF or Word file), read its content and provide a detailed summary.
+        - If it is an image, describe the scene, objects, people, and any visible text in detail.
+        
+        Based on the file's content (whether text or image), extract the following information:
+        - A concise title or main subject for the file.
+        - The most relevant department it belongs to (from this list: engineering, maintenance, operations, finance, hr, procurement, safety, legal, executive, general).
+        - The most fitting document/image type (from this list: engineering_drawing, maintenance_report, incident_report, invoice, purchase_order, regulatory_directive, safety_circular, policy, meeting_minutes, correspondence, site_photo, incident_photo, other).
+        - The language of the text (english, malayalam, bilingual). If it's an image with no text or text isn't the focus, use 'n/a'.
+        - A priority level (low, medium, high, urgent) based on the content's importance or urgency.
+        - A detailed summary (for documents) or a thorough description (for images).
+        - Any explicit action items, including their descriptions, responsible departments, deadlines, and priorities.
+        - Key insights, important observations, or significant data points.
+        - A list of relevant keywords or tags for searchability.
+        - Any specific compliance or response deadline mentioned.
+
+        Provide accurate, structured information based *only* on the content of the file.`,
+        file_urls: [file_url],
+        response_json_schema: {
+          type: "object",
+          properties: {
+            title: { type: "string" },
+            department: { 
+              type: "string",
+              enum: ["engineering", "maintenance", "operations", "finance", "hr", "procurement", "safety", "legal", "executive", "general"]
+            },
+            document_type: {
+              type: "string", 
+              enum: ["engineering_drawing", "maintenance_report", "incident_report", "invoice", "purchase_order", "regulatory_directive", "safety_circular", "policy", "meeting_minutes", "correspondence", "site_photo", "incident_photo", "other"]
+            },
+            language: {
+              type: "string",
+              enum: ["english", "malayalam", "bilingual", "n/a"]
+            },
+            priority: {
+              type: "string",
+              enum: ["low", "medium", "high", "urgent"]
+            },
+            content_summary: { type: "string" },
+            action_items: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  description: { type: "string" },
+                  department: { type: "string" },
+                  deadline: { type: "string" },
+                  priority: { type: "string", enum: ["low", "medium", "high", "urgent"] }
+                }
+              }
+            },
+            key_insights: {
+              type: "array",
+              items: { type: "string" }
+            },
+            tags: {
+              type: "array", 
+              items: { type: "string" }
+            },
+            compliance_deadline: { type: "string" }
+          }
+        }
+      });
+
+      setProgress(90);
+
+      const documentData = {
+        ...aiResponse,
+        file_url,
+        original_filename: file.name,
+        source: "upload"
+      };
+
+      setCurrentDocument(documentData);
+      setProgress(100);
+    } catch (error) {
+      setError(`Error processing document: ${error.message}`);
+      console.error("Document processing error:", error);
+    }
+    
+    setProcessing(false);
+  };
+
+  const saveDocument = async (documentData) => {
+    try {
+      await Document.create(documentData);
+      navigate(createPageUrl("Dashboard"));
+    } catch (error) {
+      setError(`Error saving document: ${error.message}`);
+    }
+  };
+
+  return (
+    <div className="p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Upload Document</h1>
+          <p className="text-gray-600">Upload and automatically process documents for KMRL</p>
+        </div>
+
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {!currentDocument ? (
+          <div className="space-y-6">
+            {/* Upload Zone */}
+            <Card className="kmrl-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <UploadIcon className="w-5 h-5" />
+                  Select Documents
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <UploadZone 
+                  onFileSelect={handleFileSelect}
+                  ref={fileInputRef}
+                />
+              </CardContent>
+            </Card>
+
+            {/* File List */}
+            {files.length > 0 && (
+              <Card className="kmrl-card">
+                <CardHeader>
+                  <CardTitle>Selected Files ({files.length})</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 mb-6">
+                    {files.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          {file.type === 'application/pdf' ? (
+                            <FileText className="w-6 h-6 text-red-500" />
+                          ) : (
+                            <Image className="w-6 h-6 text-blue-500" />
+                          )}
+                          <div>
+                            <p className="font-medium text-gray-900">{file.name}</p>
+                            <p className="text-sm text-gray-500">
+                              {(file.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFile(index)}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {processing ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-center py-8">
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                        <span className="ml-3 text-gray-600">Processing document...</span>
+                      </div>
+                      <Progress value={progress} className="h-2" />
+                      <p className="text-sm text-gray-500 text-center">
+                        Analyzing content and extracting key information
+                      </p>
+                    </div>
+                  ) : (
+                    <Button 
+                      className="w-full kmrl-gradient text-white"
+                      onClick={() => processDocument(files[0])}
+                      disabled={files.length === 0}
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      Process Document
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        ) : (
+          <DocumentPreview
+            documentData={currentDocument}
+            onSave={saveDocument}
+            onCancel={() => {
+              setCurrentDocument(null);
+              setFiles([]);
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}

@@ -10,71 +10,89 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Users, UserPlus, Edit, Trash2, Key, Eye, Settings } from "lucide-react";
-import { useState } from "react";
+import { Shield, Users, UserPlus, Edit, Trash2, Key, Eye, Settings, Clock, CheckCircle, XCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth";
+import { useNavigate } from "react-router-dom";
+import { userRegistrationService } from "@/services/userRegistrationService";
 
 const AccessControlPage = () => {
   const [newUserDialog, setNewUserDialog] = useState(false);
   const [editUserDialog, setEditUserDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const [users, setUsers] = useState<any[]>([]);
+  const [pendingUsers, setPendingUsers] = useState<any[]>([]);
+  const [approvedUsers, setApprovedUsers] = useState<any[]>([]);
+  const [rejectedUsers, setRejectedUsers] = useState<any[]>([]);
 
-  const users = [
-    {
-      id: 1,
-      name: "Admin User",
-      email: "admin@kmrl.co.in",
-      role: "Administrator",
-      department: "IT",
-      status: "active",
-      lastLogin: "2 hours ago",
-      permissions: ["full_access", "user_management", "system_settings"],
-      isDemo: true
-    },
-    {
-      id: 2,
-      name: "Operations Manager",
-      email: "ops.manager@kmrl.co.in",
-      role: "Manager",
-      department: "Operations",
-      status: "active",
-      lastLogin: "1 day ago",
-      permissions: ["view_documents", "create_reports", "manage_alerts"],
-      isDemo: true
-    },
-    {
-      id: 3,
-      name: "Safety Officer",
-      email: "safety@kmrl.co.in",
-      role: "Officer",
-      department: "Safety",
-      status: "active",
-      lastLogin: "3 hours ago",
-      permissions: ["view_documents", "safety_reports", "incident_management"],
-      isDemo: true
-    },
-    {
-      id: 4,
-      name: "Finance User",
-      email: "finance@kmrl.co.in",
-      role: "User",
-      department: "Finance",
-      status: "active",
-      lastLogin: "5 hours ago",
-      permissions: ["view_documents", "financial_reports"],
-      isDemo: true
-    },
-    {
-      id: 5,
-      name: "Maintenance Engineer",
-      email: "maintenance@kmrl.co.in",
-      role: "User",
-      department: "Maintenance",
-      status: "inactive",
-      lastLogin: "2 weeks ago",
-      permissions: ["view_documents", "maintenance_reports"],
-      isDemo: true
+  // Redirect non-admin users
+  useEffect(() => {
+    if (auth.user?.role !== 'Administrator') {
+      navigate('/');
+      return;
     }
-  ];
+  }, [auth.user, navigate]);
+
+  useEffect(() => {
+    loadAllUsers();
+  }, []);
+
+  const loadAllUsers = () => {
+    try {
+      // Load demo users from localStorage
+      const raw = localStorage.getItem('k-lens:users:v1');
+      if (raw) setUsers(JSON.parse(raw));
+      
+      // Load registration data
+      const allRegistrationUsers = userRegistrationService.getAllUsers();
+      const pendingRegistrations = userRegistrationService.getPendingRegistrations();
+      
+      setApprovedUsers(allRegistrationUsers.approved || []);
+      setPendingUsers(pendingRegistrations.filter(u => u.status === 'pending') || []);
+      setRejectedUsers(pendingRegistrations.filter(u => u.status === 'rejected') || []);
+    } catch (error) {
+      console.error('Error loading users:', error);
+      setUsers([]);
+      setApprovedUsers([]);
+      setPendingUsers([]);
+      setRejectedUsers([]);
+    }
+  };
+
+  // Controlled form state for Add User dialog
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [emailInput, setEmailInput] = useState('');
+  const [roleInput, setRoleInput] = useState('User');
+  const [departmentInput, setDepartmentInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('changeme123');
+  const [formError, setFormError] = useState<string | null>(null);
+  const [createdCreds, setCreatedCreds] = useState<{ email: string; password: string } | null>(null);
+
+  const resetForm = () => {
+    setFirstName(''); setLastName(''); setEmailInput(''); setRoleInput('User'); setDepartmentInput(''); setPasswordInput('changeme123'); setFormError(null);
+  };
+
+  const createUser = () => {
+    setFormError(null);
+    if (!emailInput || !emailInput.includes('@')) {
+      setFormError('Please provide a valid email');
+      return;
+    }
+    const name = `${firstName} ${lastName}`.trim() || emailInput;
+    try {
+      auth.addUser({ email: emailInput, password: passwordInput, name, role: roleInput, department: departmentInput, permissions: [] });
+      setCreatedCreds({ email: emailInput, password: passwordInput });
+    } catch (e) {
+      setFormError('Failed to create user');
+      return;
+    }
+    loadAllUsers(); // Refresh all user data
+    resetForm();
+    setNewUserDialog(false);
+  };
 
   const roles = [
     {
@@ -118,6 +136,27 @@ const AccessControlPage = () => {
       : "text-muted-foreground bg-muted";
   };
 
+  const formatDate = (date: string | Date) => {
+    try {
+      const d = typeof date === 'string' ? new Date(date) : date;
+      if (isNaN(d.getTime())) {
+        return 'Invalid Date';
+      }
+      return d.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return 'Invalid Date';
+    }
+  };
+
+  // Only render for administrators
+  if (auth.user?.role !== 'Administrator') {
+    return null;
+  }
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -158,26 +197,26 @@ const AccessControlPage = () => {
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="firstName">First Name</Label>
-                            <Input id="firstName" placeholder="Enter first name" />
+                            <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Enter first name" />
                           </div>
                           <div>
                             <Label htmlFor="lastName">Last Name</Label>
-                            <Input id="lastName" placeholder="Enter last name" />
+                            <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Enter last name" />
                           </div>
                         </div>
                         <div>
                           <Label htmlFor="email">Email</Label>
-                          <Input id="email" type="email" placeholder="user@kmrl.co.in" />
+                          <Input id="email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} type="email" placeholder="user@kmrl.co.in" />
                         </div>
                         <div>
                           <Label htmlFor="role">Role</Label>
-                          <Select>
+                          <Select value={roleInput} onValueChange={(v) => setRoleInput(v)}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select role" />
                             </SelectTrigger>
                             <SelectContent>
                               {roles.map((role) => (
-                                <SelectItem key={role.name} value={role.name.toLowerCase()}>
+                                <SelectItem key={role.name} value={role.name}>
                                   {role.name}
                                 </SelectItem>
                               ))}
@@ -186,26 +225,29 @@ const AccessControlPage = () => {
                         </div>
                         <div>
                           <Label htmlFor="department">Department</Label>
-                          <Select>
+                          <Select value={departmentInput} onValueChange={(v) => setDepartmentInput(v)}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select department" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="operations">Operations</SelectItem>
-                              <SelectItem value="maintenance">Maintenance</SelectItem>
-                              <SelectItem value="safety">Safety</SelectItem>
-                              <SelectItem value="finance">Finance</SelectItem>
-                              <SelectItem value="it">IT</SelectItem>
+                              <SelectItem value="Operations">Operations</SelectItem>
+                              <SelectItem value="Maintenance">Maintenance</SelectItem>
+                              <SelectItem value="Safety">Safety</SelectItem>
+                              <SelectItem value="Finance">Finance</SelectItem>
+                              <SelectItem value="IT">IT</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
+                        <div>
+                          <Label htmlFor="password">Password</Label>
+                          <Input id="password" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} type="password" />
+                        </div>
+                        {formError && <div className="text-destructive text-sm">{formError}</div>}
                         <div className="flex justify-end gap-2 pt-4">
-                          <Button variant="outline" onClick={() => setNewUserDialog(false)}>
+                          <Button variant="outline" onClick={() => { resetForm(); setNewUserDialog(false); }}>
                             Cancel
                           </Button>
-                          <Button onClick={() => {
-                            setNewUserDialog(false);
-                          }}>
+                          <Button onClick={createUser}>
                             Create User
                           </Button>
                         </div>
@@ -222,7 +264,7 @@ const AccessControlPage = () => {
                         <Users className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold">5</p>
+                        <p className="text-lg font-bold">{users.length + approvedUsers.length + pendingUsers.length}</p>
                         <p className="text-sm text-muted-foreground">Total Users</p>
                       </div>
                     </div>
@@ -230,33 +272,33 @@ const AccessControlPage = () => {
                   <Card className="p-4">
                     <div className="flex items-center gap-3">
                       <div className="h-8 w-8 rounded-lg bg-success/10 flex items-center justify-center">
-                        <Shield className="h-4 w-4 text-success" />
+                        <CheckCircle className="h-4 w-4 text-success" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold">4</p>
+                        <p className="text-lg font-bold">{users.length + approvedUsers.length}</p>
                         <p className="text-sm text-muted-foreground">Active Users</p>
                       </div>
                     </div>
                   </Card>
                   <Card className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                        <Key className="h-4 w-4 text-accent" />
+                      <div className="h-8 w-8 rounded-lg bg-amber/10 flex items-center justify-center">
+                        <Clock className="h-4 w-4 text-amber-600" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold">4</p>
-                        <p className="text-sm text-muted-foreground">User Roles</p>
+                        <p className="text-lg font-bold">{pendingUsers.length}</p>
+                        <p className="text-sm text-muted-foreground">Pending Approval</p>
                       </div>
                     </div>
                   </Card>
                   <Card className="p-4">
                     <div className="flex items-center gap-3">
                       <div className="h-8 w-8 rounded-lg bg-muted/10 flex items-center justify-center">
-                        <Eye className="h-4 w-4 text-muted-foreground" />
+                        <Key className="h-4 w-4 text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="text-lg font-bold">12</p>
-                        <p className="text-sm text-muted-foreground">Permissions</p>
+                        <p className="text-lg font-bold">4</p>
+                        <p className="text-sm text-muted-foreground">User Roles</p>
                       </div>
                     </div>
                   </Card>
@@ -296,21 +338,20 @@ const AccessControlPage = () => {
 
                     {/* Users List */}
                     <div className="space-y-4">
+                      {/* Demo Users */}
                       {users.map((user) => (
-                        <Card key={user.id} className="p-6">
+                        <Card key={`demo-${user.id}`} className="p-6">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                              <div className="h-10 w-10 rounded-full bg-gradient-primary flex items-center justify-center">
-                                <span className="text-sm font-semibold text-primary-foreground">
+                              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                <span className="text-sm font-semibold text-white">
                                   {user.name.split(' ').map(n => n[0]).join('')}
                                 </span>
                               </div>
                               <div className="space-y-1">
                                 <div className="flex items-center gap-2">
                                   <h4 className="font-semibold">{user.name}</h4>
-                                  {user.isDemo && (
-                                    <Badge variant="outline" className="text-xs">Demo</Badge>
-                                  )}
+                                  <Badge className="bg-blue-100 text-blue-800 text-xs">Demo</Badge>
                                 </div>
                                 <p className="text-sm text-muted-foreground">{user.email}</p>
                                 <div className="flex items-center gap-2">
@@ -321,26 +362,18 @@ const AccessControlPage = () => {
                                     {user.role}
                                   </Badge>
                                   <Badge variant="outline">{user.department}</Badge>
-                                  <Badge 
-                                    variant="outline"
-                                    className={getStatusColor(user.status)}
-                                  >
-                                    {user.status}
-                                  </Badge>
+                                  <Badge className="bg-green-100 text-green-800">Active</Badge>
                                 </div>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
                               <div className="text-right mr-4">
                                 <p className="text-sm font-medium">Last Login</p>
-                                <p className="text-sm text-muted-foreground">{user.lastLogin}</p>
+                                <p className="text-sm text-muted-foreground">-</p>
                               </div>
                               <Button variant="outline" size="sm">
                                 <Edit className="h-4 w-4 mr-1" />
                                 Edit
-                              </Button>
-                              <Button variant="ghost" size="sm">
-                                <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
                           </div>
@@ -348,7 +381,7 @@ const AccessControlPage = () => {
                           <div className="mt-4 pt-4 border-t">
                             <p className="text-sm font-medium mb-2">Permissions:</p>
                             <div className="flex flex-wrap gap-2">
-                              {user.permissions.map((permission) => (
+                              {(user.permissions || ['full_access']).map((permission) => (
                                 <Badge key={permission} variant="secondary" className="text-xs">
                                   {permission.replace('_', ' ')}
                                 </Badge>
@@ -357,6 +390,169 @@ const AccessControlPage = () => {
                           </div>
                         </Card>
                       ))}
+
+                      {/* Approved Registration Users */}
+                      {approvedUsers.map((user) => (
+                        <Card key={`approved-${user.id}`} className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
+                                <span className="text-sm font-semibold text-white">
+                                  {user.username.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold">{user.username}</h4>
+                                  <Badge className="bg-green-100 text-green-800 text-xs">Registered</Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground">{user.email}</p>
+                                <div className="flex items-center gap-2">
+                                  <Badge variant="outline">User</Badge>
+                                  <Badge className="bg-green-100 text-green-800">Approved</Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Approved: {formatDate(user.approvedDate)} by {user.approvedBy}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="text-right mr-4">
+                                <p className="text-sm font-medium">Status</p>
+                                <p className="text-sm text-green-600">Can Login</p>
+                              </div>
+                              <Button variant="outline" size="sm">
+                                <Edit className="h-4 w-4 mr-1" />
+                                Edit
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-4 pt-4 border-t">
+                            <p className="text-sm font-medium mb-2">Permissions:</p>
+                            <div className="flex flex-wrap gap-2">
+                              <Badge variant="secondary" className="text-xs">view documents</Badge>
+                              <Badge variant="secondary" className="text-xs">basic reports</Badge>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+
+                      {/* Pending Registration Users */}
+                      {pendingUsers.map((user) => (
+                        <Card key={`pending-${user.id}`} className="p-6 border-amber-200 bg-amber-50/30">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-center">
+                                <span className="text-sm font-semibold text-white">
+                                  {user.username.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold">{user.username}</h4>
+                                  <Badge className="bg-amber-100 text-amber-800 text-xs">
+                                    <Clock className="h-3 w-3 mr-1" />
+                                    Pending
+                                  </Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground">{user.email}</p>
+                                <div className="flex items-center gap-2">
+                                  <Badge variant="outline">User</Badge>
+                                  <Badge className="bg-amber-100 text-amber-800">Awaiting Approval</Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Requested: {formatDate(user.requestDate)}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="text-right mr-4">
+                                <p className="text-sm font-medium">Status</p>
+                                <p className="text-sm text-amber-600">Cannot Login</p>
+                              </div>
+                              <Button variant="outline" size="sm" onClick={() => navigate('/admin/users')}>
+                                <Eye className="h-4 w-4 mr-1" />
+                                Review
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-4 pt-4 border-t">
+                            <p className="text-sm font-medium mb-2">Pending Permissions:</p>
+                            <div className="flex flex-wrap gap-2">
+                              <Badge variant="outline" className="text-xs opacity-50">view documents</Badge>
+                              <Badge variant="outline" className="text-xs opacity-50">basic reports</Badge>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+
+                      {/* Rejected Registration Users */}
+                      {rejectedUsers.map((user) => (
+                        <Card key={`rejected-${user.id}`} className="p-6 border-red-200 bg-red-50/30">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center">
+                                <span className="text-sm font-semibold text-white">
+                                  {user.username.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold">{user.username}</h4>
+                                  <Badge className="bg-red-100 text-red-800 text-xs">
+                                    <XCircle className="h-3 w-3 mr-1" />
+                                    Rejected
+                                  </Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground">{user.email}</p>
+                                <div className="flex items-center gap-2">
+                                  <Badge variant="outline">User</Badge>
+                                  <Badge className="bg-red-100 text-red-800">Access Denied</Badge>
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                  Requested: {formatDate(user.requestDate)}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="text-right mr-4">
+                                <p className="text-sm font-medium">Status</p>
+                                <p className="text-sm text-red-600">Rejected</p>
+                              </div>
+                              <Button variant="outline" size="sm" onClick={() => navigate('/admin/users')}>
+                                <Eye className="h-4 w-4 mr-1" />
+                                Review
+                              </Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+
+                      {/* Show message if no users */}
+                      {users.length === 0 && approvedUsers.length === 0 && pendingUsers.length === 0 && rejectedUsers.length === 0 && (
+                        <Card className="p-12 text-center">
+                          <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
+                          <h3 className="text-lg font-semibold mb-2">No Users Found</h3>
+                          <p className="text-muted-foreground">No users have been created or registered yet.</p>
+                        </Card>
+                      )}
+
+                      {createdCreds && (
+                        <Card className="p-4 border border-primary">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="text-sm text-muted-foreground">New user created</div>
+                              <div className="font-mono mt-1">Email: {createdCreds.email}</div>
+                              <div className="font-mono">Password: {createdCreds.password}</div>
+                            </div>
+                            <div>
+                              <Button onClick={() => setCreatedCreds(null)}>Dismiss</Button>
+                            </div>
+                          </div>
+                        </Card>
+                      )}
                     </div>
                   </TabsContent>
 

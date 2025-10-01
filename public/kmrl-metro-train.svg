@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circular shape -->
+  <ellipse cx="400" cy="320" rx="350" ry="80" fill="url(#groundGradient)" opacity="0.8"/>
+  
+  <!-- Metro track/viaduct -->
+  <rect x="50" y="280" width="700" height="20" fill="#666" rx="10"/>
+  <rect x="50" y="270" width="700" height="8" fill="#888" rx="4"/>
+  
+  <!-- Support pillars -->
+  <rect x="120" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="200" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="280" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="360" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="440" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="520" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="600" y="300" width="15" height="100" fill="#999" rx="7"/>
+  <rect x="680" y="300" width="15" height="100" fill="#999" rx="7"/>
+  
+  <!-- Metro train body -->
+  <rect x="150" y="180" width="500" height="100" fill="url(#trainGradient)" rx="15"/>
+  
+  <!-- Train front -->
+  <path d="M150 230 Q120 230 120 200 Q120 180 150 180" fill="url(#frontGradient)"/>
+  
+  <!-- Train windows -->
+  <rect x="170" y="190" width="60" height="40" fill="url(#windowGradient)" rx="5"/>
+  <rect x="240" y="190" width="60" height="40" fill="url(#windowGradient)" rx="5"/>
+  <rect x="310" y="190" width="60" height="40" fill="url(#windowGradient)" rx="5"/>
+  <rect x="380" y="190" width="60" height="40" fill="url(#windowGradient)" rx="5"/>
+  <rect x="450" y="190" width="60" height="40" fill="url(#windowGradient)" rx="5"/>
+  <rect x="520" y="190" width="60" height="40" fill="url(#windowGradient)" rx="5"/>
+  <rect x="590" y="190" width="50" height="40" fill="url(#windowGradient)" rx="5"/>
+  
+  <!-- Train doors -->
+  <rect x="180" y="240" width="40" height="40" fill="#444" rx="3"/>
+  <rect x="250" y="240" width="40" height="40" fill="#444" rx="3"/>
+  <rect x="320" y="240" width="40" height="40" fill="#444" rx="3"/>
+  <rect x="390" y="240" width="40" height="40" fill="#444" rx="3"/>
+  <rect x="460" y="240" width="40" height="40" fill="#444" rx="3"/>
+  <rect x="530" y="240" width="40" height="40" fill="#444" rx="3"/>
+  
+  <!-- Train wheels -->
+  <circle cx="200" cy="290" r="12" fill="#333"/>
+  <circle cx="250" cy="290" r="12" fill="#333"/>
+  <circle cx="350" cy="290" r="12" fill="#333"/>
+  <circle cx="400" cy="290" r="12" fill="#333"/>
+  <circle cx="500" cy="290" r="12" fill="#333"/>
+  <circle cx="550" cy="290" r="12" fill="#333"/>
+  <circle cx="600" cy="290" r="12" fill="#333"/>
+  
+  <!-- Green nature elements under bridge -->
+  <ellipse cx="300" cy="380" rx="80" ry="20" fill="url(#grassGradient)"/>
+  <ellipse cx="500" cy="375" rx="60" ry="15" fill="url(#grassGradient)"/>
+  <ellipse cx="150" cy="385" rx="50" ry="12" fill="url(#grassGradient)"/>
+  <ellipse cx="650" cy="380" rx="70" ry="18" fill="url(#grassGradient)"/>
+  
+  <!-- Decorative elements on train -->
+  <rect x="160" y="195" width="480" height="3" fill="url(#accentGradient)" rx="1"/>
+  <rect x="160" y="220" width="480" height="2" fill="url(#accentGradient)" rx="1"/>
+  
+  <defs>
+    <linearGradient id="trainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#29B6F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0288D1;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="frontGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0288D1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#29B6F6;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="windowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E3F2FD;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#BBDEFB;stop-opacity:0.7" />
+    </linearGradient>
+    
+    <linearGradient id="groundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#81C784;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#4CAF50;stop-opacity:0.6" />
+    </linearGradient>
+    
+    <linearGradient id="grassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#A5D6A7;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#66BB6A;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8BC34A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CDDC39;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

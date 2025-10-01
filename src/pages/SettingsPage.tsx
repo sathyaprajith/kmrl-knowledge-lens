@@ -24,14 +24,31 @@ import {
   Globe,
   Palette
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth";
+import { useNavigate } from "react-router-dom";
 
 const SettingsPage = () => {
+  const auth = useAuth();
+  const navigate = useNavigate();
   const [autoSync, setAutoSync] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [maintenanceMode, setMaintenanceMode] = useState(false);
+
+  // Redirect non-admin users
+  useEffect(() => {
+    if (auth.user?.role !== 'Administrator') {
+      navigate('/');
+      return;
+    }
+  }, [auth.user, navigate]);
+
+  // Only render for administrators
+  if (auth.user?.role !== 'Administrator') {
+    return null;
+  }
 
   return (
     <SidebarProvider>

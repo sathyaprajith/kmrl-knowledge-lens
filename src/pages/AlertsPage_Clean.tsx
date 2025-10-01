@@ -10,23 +10,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle, Clock, Bell, FileText, Building2, Download, CalendarDays, Activity, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useAuth } from "@/lib/auth";
 
 const AlertsPage = () => {
-  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("alerts");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("all");
   const [criticalOnly, setCriticalOnly] = useState(false);
 
-  // Get user's department from the auth context
-  const userDepartment = user?.role || "Administrator";
-
-  // Sample alerts data - comprehensive list for all departments
-  const allAlerts = [
-    // Safety Department
+  // Sample alerts data
+  const alerts = [
     {
-      id: "SA-001",
+      id: "SA",
       title: "Safety Bulletin Deadline - March 12, 2025",
       description: "Critical safety documentation review required before implementation of new track safety protocols.",
       department: "Safety",
@@ -37,31 +31,7 @@ const AlertsPage = () => {
       action: "Resolve"
     },
     {
-      id: "SA-002",
-      title: "Emergency Drill Report Pending",
-      description: "Monthly emergency evacuation drill report must be submitted within 48 hours.",
-      department: "Safety",
-      timeAgo: "6 hours ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Emergency Drill Report - Sept 2025",
-      action: "Resolve"
-    },
-    {
-      id: "SA-003",
-      title: "Track Inspection Overdue",
-      description: "Weekly track safety inspection for Sector 7 is 3 days overdue. Immediate action required.",
-      department: "Safety",
-      timeAgo: "3 days ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Track Inspection Checklist",
-      action: "Resolve"
-    },
-
-    // Legal Department
-    {
-      id: "LE-001",
+      id: "LE",
       title: "Environmental Permit Renewal Due",
       description: "Environmental clearance documentation needs renewal before April 15, 2025.",
       department: "Legal",
@@ -72,31 +42,7 @@ const AlertsPage = () => {
       action: "Resolve"
     },
     {
-      id: "LE-002",
-      title: "Contract Amendment Required",
-      description: "Vendor contract for electrical maintenance requires immediate amendment due to policy changes.",
-      department: "Legal",
-      timeAgo: "4 hours ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Vendor Contract - ElectroTech Solutions",
-      action: "Resolve"
-    },
-    {
-      id: "LE-003",
-      title: "Compliance Audit Findings",
-      description: "Legal compliance audit has identified 5 critical issues requiring immediate attention.",
-      department: "Legal",
-      timeAgo: "2 days ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Q3 Compliance Audit Report",
-      action: "Resolve"
-    },
-
-    // HR Department
-    {
-      id: "HR-001",
+      id: "HR",
       title: "Staff Training Certification Expiring",
       description: "Technical staff certifications expire in 30 days. Renewal process must begin immediately.",
       department: "HR",
@@ -105,175 +51,8 @@ const AlertsPage = () => {
       status: "open",
       documentTitle: "Training Records 2024",
       action: "Resolve"
-    },
-    {
-      id: "HR-002",
-      title: "Employee Handbook Update",
-      description: "Annual employee handbook revision must be completed and distributed by month end.",
-      department: "HR",
-      timeAgo: "1 day ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Employee Handbook 2025",
-      action: "Resolve"
-    },
-    {
-      id: "HR-003",
-      title: "Performance Review Cycle",
-      description: "Q3 performance reviews for 45 employees are pending completion. Deadline: October 5th.",
-      department: "HR",
-      timeAgo: "8 hours ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Q3 Performance Review Template",
-      action: "Resolve"
-    },
-
-    // Finance Department
-    {
-      id: "FN-001",
-      title: "Budget Approval Pending",
-      description: "Q4 operational budget requires executive approval before October 1st deadline.",
-      department: "Finance",
-      timeAgo: "3 hours ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Q4 Budget Proposal 2025",
-      action: "Resolve"
-    },
-    {
-      id: "FN-002",
-      title: "Vendor Payment Overdue",
-      description: "Payment to maintenance contractor is 15 days overdue. Risk of service suspension.",
-      department: "Finance",
-      timeAgo: "1 day ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Invoice #MNT-2025-0892",
-      action: "Resolve"
-    },
-    {
-      id: "FN-003",
-      title: "Tax Filing Deadline",
-      description: "Monthly GST filing deadline is October 3rd. Documentation review required.",
-      department: "Finance",
-      timeAgo: "2 days ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "GST Returns - September 2025",
-      action: "Resolve"
-    },
-
-    // Operations Department
-    {
-      id: "OP-001",
-      title: "Service Disruption Alert",
-      description: "Planned maintenance on Line 2 requires passenger notification 72 hours in advance.",
-      department: "Operations",
-      timeAgo: "4 hours ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Maintenance Schedule - Line 2",
-      action: "Resolve"
-    },
-    {
-      id: "OP-002",
-      title: "Peak Hour Capacity Review",
-      description: "Monthly passenger capacity analysis shows 15% increase. Infrastructure assessment needed.",
-      department: "Operations",
-      timeAgo: "1 day ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Passenger Traffic Report - Sept 2025",
-      action: "Resolve"
-    },
-    {
-      id: "OP-003",
-      title: "Signal System Maintenance",
-      description: "Quarterly signal system maintenance for Central Station requires scheduling confirmation.",
-      department: "Operations",
-      timeAgo: "6 hours ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Signal Maintenance Protocol",
-      action: "Resolve"
-    },
-
-    // IT Department
-    {
-      id: "IT-001",
-      title: "System Backup Failure",
-      description: "Automated backup system failed for 3 consecutive days. Data integrity at risk.",
-      department: "IT",
-      timeAgo: "30 minutes ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Backup System Error Log",
-      action: "Resolve"
-    },
-    {
-      id: "IT-002",
-      title: "Security Patch Update",
-      description: "Critical security patches available for ticket management system. Installation required.",
-      department: "IT",
-      timeAgo: "2 hours ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Security Update Notes",
-      action: "Resolve"
-    },
-    {
-      id: "IT-003",
-      title: "Network Performance Issues",
-      description: "WiFi connectivity issues reported at 3 stations. Investigation and resolution needed.",
-      department: "IT",
-      timeAgo: "4 hours ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Network Diagnostic Report",
-      action: "Resolve"
-    },
-
-    // Maintenance Department
-    {
-      id: "MN-001",
-      title: "Escalator Malfunction",
-      description: "Escalator at Aluva Station has been non-operational for 48 hours. Repair urgently needed.",
-      department: "Maintenance",
-      timeAgo: "2 days ago",
-      priority: "HIGH",
-      status: "open",
-      documentTitle: "Escalator Maintenance Log",
-      action: "Resolve"
-    },
-    {
-      id: "MN-002",
-      title: "Air Conditioning Service",
-      description: "Monthly AC maintenance due for all station facilities. Service scheduling required.",
-      department: "Maintenance",
-      timeAgo: "1 day ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "AC Maintenance Schedule",
-      action: "Resolve"
-    },
-    {
-      id: "MN-003",
-      title: "Platform Cleaning Equipment",
-      description: "Automated platform cleaning system requires replacement parts. Service disruption possible.",
-      department: "Maintenance",
-      timeAgo: "8 hours ago",
-      priority: "MEDIUM",
-      status: "open",
-      documentTitle: "Equipment Replacement Request",
-      action: "Resolve"
     }
   ];
-
-  // Filter alerts based on user's department (Administrator sees all)
-  const alerts = userDepartment === "Administrator" 
-    ? allAlerts 
-    : allAlerts.filter(alert => alert.department === userDepartment);
 
   // Sample compliance timeline data
   const complianceTimeline = [

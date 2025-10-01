@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug User Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Management Debug Tool</h1>
+
+        <div class="debug-section">
+            <h3>LocalStorage Debug</h3>
+            <button onclick="checkLocalStorage()">Check LocalStorage</button>
+            <button onclick="clearAllStorage()">Clear All Storage</button>
+            <button onclick="addTestData()">Add Test Data</button>
+            <div id="storage-output"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>Service Functions Test</h3>
+            <button onclick="testServiceFunctions()">Test Service Functions</button>
+            <div id="service-output"></div>
+        </div>
+
+        <div class="debug-section">
+            <h3>Console Output</h3>
+            <div id="console-output"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simple logger to capture console output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        const logOutput = document.getElementById('console-output');
+
+        function addToLog(type, ...args) {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `<strong>[${type.toUpperCase()}]</strong> ${args.join(' ')}<br>`;
+            logOutput.appendChild(div);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            addToLog('log', ...args);
+        };
+
+        console.error = function (...args) {
+            originalError.apply(console, args);
+            addToLog('error', ...args);
+        };
+
+        console.warn = function (...args) {
+            originalWarn.apply(console, args);
+            addToLog('warn', ...args);
+        };
+
+        function checkLocalStorage() {
+            const output = document.getElementById('storage-output');
+            let html = '<h4>LocalStorage Contents:</h4>';
+
+            const keys = [
+                'k-lens:pending-users:v1',
+                'k-lens:approved-users:v1',
+                'k-lens:admin-notifications:v1',
+                'k-lens:users:v1'
+            ];
+
+            keys.forEach(key => {
+                const data = localStorage.getItem(key);
+                html += `<p><strong>${key}:</strong></p>`;
+                if (data) {
+                    try {
+                        const parsed = JSON.parse(data);
+                        html += `<pre>${JSON.stringify(parsed, null, 2)}</pre>`;
+                    } catch (e) {
+                        html += `<p class="error">Error parsing: ${e.message}</p>`;
+                        html += `<pre>${data}</pre>`;
+                    }
+                } else {
+                    html += '<p><em>No data</em></p>';
+                }
+            });
+
+            output.innerHTML = html;
+        }
+
+        function clearAllStorage() {
+            const keys = [
+                'k-lens:pending-users:v1',
+                'k-lens:approved-users:v1',
+                'k-lens:admin-notifications:v1',
+                'k-lens:users:v1'
+            ];
+
+            keys.forEach(key => {
+                localStorage.removeItem(key);
+            });
+
+            console.log('All storage cleared');
+            checkLocalStorage();
+        }
+
+        function addTestData() {
+            // Add test pending user
+            const testPendingUsers = [{
+                id: '1',
+                username: 'testuser',
+                email: 'test@example.com',
+                password: 'password123',
+                requestDate: new Date().toISOString(),
+                status: 'pending'
+            }];
+
+            // Add test approved user
+            const testApprovedUsers = [{
+                id: '2',
+                username: 'approveduser',
+                email: 'approved@example.com',
+                password: 'password123',
+                approvedDate: new Date().toISOString(),
+                approvedBy: 'Admin'
+            }];
+
+            // Add test demo users
+            const testDemoUsers = [
+                {
+                    id: 'admin',
+                    name: 'Administrator',
+                    email: 'admin@klens.local',
+                    password: 'admin123',
+                    role: 'Admin',
+                    department: 'IT'
+                },
+                {
+                    id: 'user',
+                    name: 'Regular User',
+                    email: 'user@klens.local',
+                    password: 'user123',
+                    role: 'User',
+                    department: 'Operations'
+                }
+            ];
+
+            localStorage.setItem('k-lens:pending-users:v1', JSON.stringify(testPendingUsers));
+            localStorage.setItem('k-lens:approved-users:v1', JSON.stringify(testApprovedUsers));
+            localStorage.setItem('k-lens:users:v1', JSON.stringify(testDemoUsers));
+            localStorage.setItem('k-lens:admin-notifications:v1', JSON.stringify([]));
+
+            console.log('Test data added');
+            checkLocalStorage();
+        }
+
+        function testServiceFunctions() {
+            const output = document.getElementById('service-output');
+            output.innerHTML = '<h4>Testing Service Functions:</h4><p>Check console for detailed output...</p>';
+
+            console.log('Testing service functions...');
+
+            // Test basic localStorage operations
+            try {
+                const testData = { test: 'value' };
+                localStorage.setItem('test-key', JSON.stringify(testData));
+                const retrieved = JSON.parse(localStorage.getItem('test-key'));
+                console.log('Basic localStorage test:', retrieved);
+                localStorage.removeItem('test-key');
+            } catch (e) {
+                console.error('Basic localStorage test failed:', e);
+            }
+
+            // Test date parsing
+            try {
+                const testDate = new Date();
+                const dateString = testDate.toISOString();
+                const parsedDate = new Date(dateString);
+                console.log('Date test - Original:', testDate, 'String:', dateString, 'Parsed:', parsedDate);
+            } catch (e) {
+                console.error('Date test failed:', e);
+            }
+
+            console.log('Service function tests completed');
+        }
+
+        // Initialize
+        checkLocalStorage();
+    </script>
+</body>
+
+</html>

@@ -142,14 +142,13 @@ Downloads: ${doc.downloads}`;
                     <Button
                       variant={showInboxHub ? "default" : "outline"}
                       onClick={() => setShowInboxHub(true)}
-                      className={showInboxHub ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700" : ""}
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                     >
                       Document Inbox & AI Hub
                     </Button>
                     <Button
                       variant={!showInboxHub ? "default" : "outline"}
                       onClick={() => setShowInboxHub(false)}
-                      className={!showInboxHub ? "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700" : ""}
                     >
                       Traditional Library
                     </Button>
@@ -373,6 +372,216 @@ Downloads: ${doc.downloads}`;
                     )}
                   </div>
                 )}
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold">Document Library</h2>
+                    <p className="text-muted-foreground">Browse and manage all KMRL documents</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setFilterOpen(!filterOpen)}
+                      >
+                        <Filter className="h-4 w-4 mr-2" />
+                        Filter
+                      </Button>
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        onClick={() => window.location.href = '/upload'}
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        AI Upload & Analysis
+                      </Button>
+                    </div>
+                </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <Card className="p-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">2,847</p>
+                      <p className="text-sm text-muted-foreground">Total Documents</p>
+                    </div>
+                  </Card>
+                  <Card className="p-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">124</p>
+                      <p className="text-sm text-muted-foreground">New This Month</p>
+                    </div>
+                  </Card>
+                  <Card className="p-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">45GB</p>
+                      <p className="text-sm text-muted-foreground">Total Storage</p>
+                    </div>
+                  </Card>
+                  <Card className="p-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold">12</p>
+                      <p className="text-sm text-muted-foreground">Pending Review</p>
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Documents List */}
+                <Card className="p-6">
+
+                  <div className="space-y-4">
+                    {documents.map((doc) => (
+                      <div 
+                        key={doc.id} 
+                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer"
+                        onClick={() => handleViewDocument(doc)}
+                      >
+                        <div className="flex items-center gap-4">
+                          <FileText className="h-8 w-8 text-primary" />
+                          <div className="space-y-1">
+                            <h4 className="font-medium">{doc.title}</h4>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {new Date(doc.date).toLocaleDateString()}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <User className="h-3 w-3" />
+                                {doc.author}
+                              </span>
+                              <span>{doc.size}</span>
+                              <span>{doc.downloads} downloads</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <Badge 
+                            variant={
+                              doc.status === 'Active' ? 'default' : 
+                              doc.status === 'Current' ? 'secondary' : 
+                              doc.status === 'Pending' ? 'outline' : 'default'
+                            }
+                          >
+                            {doc.status}
+                          </Badge>
+                          <Badge variant="outline">{doc.type}</Badge>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewDocument(doc);
+                            }}
+                            title="View Document"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDownloadDocument(doc);
+                            }}
+                            title="Download Document"
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Processed Documents Section */}
+                {storedDocuments.length > 0 && (
+                  <Card className="p-6">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <h3 className="text-xl font-semibold">Processed Documents</h3>
+                        <p className="text-muted-foreground">Documents processed with text extraction and categorization</p>
+                      </div>
+                      <Badge variant="outline">{storedDocuments.length} Documents</Badge>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {storedDocuments.map((doc) => (
+                        <div 
+                          key={doc.id} 
+                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer"
+                          onClick={() => handleViewExtractedText(doc)}
+                        >
+                          <div className="flex items-center gap-4">
+                            <FileText className="h-8 w-8 text-blue-600" />
+                            <div className="space-y-1">
+                              <h4 className="font-medium">{doc.filename}</h4>
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  {doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : 'Unknown date'}
+                                </span>
+                                <span>{(doc.size / 1024).toFixed(1)} KB</span>
+                                {doc.department && (
+                                  <span className="flex items-center gap-1">
+                                    <Building2 className="h-3 w-3" />
+                                    {doc.department}
+                                  </span>
+                                )}
+                                {doc.bulletPoints && (
+                                  <span>{doc.bulletPoints.length} bullet points</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-3">
+                            {doc.urgency && (
+                              <Badge 
+                                variant="outline"
+                                className={`${
+                                  doc.urgency === 'Critical' ? 'border-red-500 text-red-700 bg-red-50' :
+                                  doc.urgency === 'High' ? 'border-orange-500 text-orange-700 bg-orange-50' :
+                                  doc.urgency === 'Medium' ? 'border-yellow-500 text-yellow-700 bg-yellow-50' :
+                                  'border-green-500 text-green-700 bg-green-50'
+                                }`}
+                              >
+                                <AlertTriangle className="h-3 w-3 mr-1" />
+                                {doc.urgency}
+                              </Badge>
+                            )}
+                            <Badge variant="outline">{doc.fileType.split('/')[1]?.toUpperCase() || 'FILE'}</Badge>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              title="View extracted text"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleViewExtractedText(doc);
+                              }}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              title="Copy bullet points"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopyBulletPoints(doc);
+                              }}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                )}
+                  </div>
+                )}
               </div>
             </div>
           </main>
@@ -471,14 +680,14 @@ Downloads: ${doc.downloads}`;
               )}
               
               {/* For processed documents */}
-              {selectedDocument.filename && selectedDocument.text && (
+              {selectedDocument.filename && (selectedDocument.text || selectedDocument.extractedText) && (
                 <div className="space-y-6">
                   {/* Document Header */}
                   <div className="border-b pb-4">
                     <h4 className="text-xl font-semibold text-gray-800 mb-2">{selectedDocument.filename}</h4>
                     <div className="flex items-center gap-2">
                       <Badge variant="outline">
-                        {selectedDocument.fileType?.split('/')[1]?.toUpperCase() || 'FILE'}
+                        {selectedDocument.fileType.split('/')[1]?.toUpperCase() || 'FILE'}
                       </Badge>
                       {selectedDocument.urgency && (
                         <Badge 
@@ -559,7 +768,7 @@ Downloads: ${doc.downloads}`;
                   <div>
                     <strong>Extracted Text:</strong>
                     <div className="mt-2 p-4 bg-gray-50 rounded-lg max-h-96 overflow-auto">
-                      <pre className="whitespace-pre-wrap text-sm">{selectedDocument.text || 'No text content available'}</pre>
+                      <pre className="whitespace-pre-wrap text-sm">{selectedDocument.text || selectedDocument.extractedText || 'No text content available'}</pre>
                     </div>
                   </div>
                 </div>
