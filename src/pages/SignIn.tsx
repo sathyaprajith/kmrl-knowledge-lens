@@ -342,23 +342,23 @@ const SignIn = () => {
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 text-center">
                     Quick access with demo accounts:
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-2">
                     {demoAccounts.map((account, index) => (
                       <button
                         key={index}
                         onClick={() => quickLogin(account.email, account.password)}
                         disabled={isLoading}
-                        className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 text-left w-full"
+                        className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 text-left w-full min-h-[60px] sm:min-h-[auto]"
                       >
-                        <div className={`h-7 w-7 sm:h-8 sm:w-8 rounded-full ${account.color} flex items-center justify-center flex-shrink-0`}>
-                          <account.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
+                        <div className={`h-8 w-8 sm:h-9 sm:w-9 rounded-full ${account.color} flex items-center justify-center flex-shrink-0`}>
+                          <account.icon className="h-4 w-4 sm:h-4 sm:w-4 text-white" />
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-xs sm:text-sm font-medium text-slate-900 dark:text-white truncate">
                             {account.role}
                           </p>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Demo
+                            Demo Account
                           </p>
                         </div>
                       </button>

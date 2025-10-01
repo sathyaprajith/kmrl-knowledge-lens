@@ -54,184 +54,184 @@ export const DocumentInboxHub: React.FC<DocumentInboxHubProps> = ({
           language: 'English',
           priority: 'high-risk',
           date: new Date().toISOString(),
-          author: 'Safety Department',
-          content: 'Updated emergency protocols for monsoon season...',
+          author: 'Rajesh Kumar - Chief Safety Officer',
+          content: 'Updated emergency protocols for monsoon season 2025. Key changes: evacuation routes modified for tunnel sections, emergency lighting upgraded to LED systems, water pumping capacity increased by 40% at all underground stations. Implementation deadline: October 15, 2025. Training mandatory for all station staff.',
           type: 'Safety Alert'
         },
         {
           id: 'safety-002',
-          title: 'Track Inspection Report - Sector 7',
+          title: 'Track Inspection Report - Sector 7 (Kalamassery to Aluva)',
           source: 'File Upload',
           department: 'Safety',
           language: 'English',
           priority: 'urgent',
           date: new Date(Date.now() - 86400000).toISOString(),
-          author: 'Safety Inspector',
-          content: 'Weekly track safety inspection findings...',
+          author: 'Priya Menon - Track Safety Inspector',
+          content: 'Weekly safety inspection completed for 12.8 km track section. Findings: 3 minor rail joint loose bolts at KM 15.2, vegetation clearance required near Companypady Bridge, drainage blockage at 2 locations. Corrective action deadline: October 3, 2025. Track speed restricted to 65 kmph until repairs completed.',
           type: 'Inspection Report'
         },
         {
           id: 'safety-003',
-          title: 'Fire Safety Drill Documentation',
+          title: 'Fire Safety Drill Documentation - Ernakulam South Station',
           source: 'Web Portal',
           department: 'Safety',
           language: 'English',
           priority: 'normal',
           date: new Date(Date.now() - 172800000).toISOString(),
-          author: 'Safety Team',
-          content: 'Monthly fire safety drill results and analysis...',
+          author: 'Anil Thomas - Fire Safety Coordinator',
+          content: 'Monthly fire safety drill conducted on September 28, 2025 at 2:30 PM. Participation: 45 staff members, 12 security personnel. Evacuation time: 4 minutes 23 seconds (target: 5 minutes). Areas for improvement: PA system clarity in Platform 2, fire extinguisher access blocked by vendor stalls. Next drill: October 28, 2025.',
           type: 'Drill Report'
         },
 
         // Legal Department Documents
         {
           id: 'legal-001',
-          title: 'Environmental Permit Renewal Application',
+          title: 'Environmental Permit Renewal Application - NOC/2025/ENV/089',
           source: 'Email',
           department: 'Legal',
           language: 'English',
           priority: 'urgent',
           date: new Date(Date.now() - 43200000).toISOString(),
-          author: 'Legal Department',
-          content: 'Environmental clearance renewal documentation...',
+          author: 'Advocate Sunitha Nair - Legal Advisor',
+          content: 'Environmental clearance renewal application submitted to Kerala State Pollution Control Board. Permit validity expires: November 15, 2025. Documents submitted: EIA report, waste management plan, noise pollution assessment. Application fee: ₹2,50,000. Expected approval: October 25, 2025. Non-compliance penalty: ₹10 lakh per day.',
           type: 'Legal Document'
         },
         {
           id: 'legal-002',
-          title: 'Vendor Contract Amendment - ElectroTech',
+          title: 'Vendor Contract Amendment - ElectroTech Solutions Pvt Ltd',
           source: 'File Upload',
           department: 'Legal',
           language: 'English',
           priority: 'high-risk',
           date: new Date(Date.now() - 129600000).toISOString(),
-          author: 'Legal Advisor',
-          content: 'Contract amendment for electrical maintenance vendor...',
+          author: 'CA Vinod Krishnan - Contract Manager',
+          content: 'Contract amendment required for electrical maintenance vendor due to GST rate changes and revised safety standards. Original contract value: ₹4.2 crore (3 years). Proposed amendment: addition of LED upgrade clause, penalty restructuring for delays, insurance coverage increased to ₹50 lakh. Legal review deadline: October 5, 2025.',
           type: 'Contract'
         },
         {
           id: 'legal-003',
-          title: 'Compliance Audit Report Q3 2025',
+          title: 'Compliance Audit Report Q3 2025 - RITES Assessment',
           source: 'Web Portal',
           department: 'Legal',
           language: 'English',
           priority: 'urgent',
           date: new Date(Date.now() - 216000000).toISOString(),
-          author: 'Compliance Team',
-          content: 'Quarterly compliance audit findings and recommendations...',
+          author: 'RITES Audit Team - Principal Auditor',
+          content: 'Quarterly compliance audit conducted by RITES from Sept 15-22, 2025. Key findings: 5 critical non-conformities related to signaling protocols, 12 minor observations on safety documentation. Compliance score: 87% (target: 95%). Action plan required within 15 days. Re-audit scheduled: November 10, 2025.',
           type: 'Audit Report'
         },
 
         // HR Department Documents
         {
           id: 'hr-001',
-          title: 'Staff Training Certification Records',
+          title: 'Staff Training Certification Records - Technical Personnel',
           source: 'File Upload',
           department: 'HR',
           language: 'English',
           priority: 'urgent',
           date: new Date(Date.now() - 64800000).toISOString(),
-          author: 'HR Manager',
-          content: 'Technical staff certification expiry notices...',
+          author: 'Deepa Pillai - HR Manager (Training)',
+          content: 'Technical certification status: 23 signal technicians, 15 track maintenance staff, 8 electrical engineers. Expiring certifications: 12 within 30 days. Renewal cost: ₹3.5 lakh. Training scheduled: October 10-15, 2025 at IRISET Secunderabad. Travel & accommodation budget approved: ₹8.2 lakh.',
           type: 'Training Record'
         },
         {
           id: 'hr-002',
-          title: 'Employee Handbook 2025 Update',
+          title: 'Employee Handbook 2025 Update - Version 3.2',
           source: 'Email',
           department: 'HR',
           language: 'English',
           priority: 'normal',
           date: new Date(Date.now() - 151200000).toISOString(),
-          author: 'HR Department',
-          content: 'Annual employee handbook revision and updates...',
+          author: 'Ravi Shankar - Deputy General Manager (HR)',
+          content: 'Annual employee handbook revision incorporating new policies: flexible working hours for administrative staff, updated leave policy (increased maternity leave to 180 days), revised disciplinary procedures. Translation to Malayalam in progress. Distribution deadline: October 31, 2025. Digital copies uploaded to employee portal.',
           type: 'Policy Document'
         },
         {
           id: 'hr-003',
-          title: 'Performance Review Templates Q3',
+          title: 'Performance Review Templates Q3 - Appraisal Cycle 2025',
           source: 'Web Portal',
           department: 'HR',
           language: 'English',
           priority: 'normal',
           date: new Date(Date.now() - 237600000).toISOString(),
-          author: 'HR Team',
-          content: 'Quarterly performance review documentation...',
+          author: 'Meera Nair - Assistant Manager (HR Operations)',
+          content: 'Q3 performance review for 347 employees across all departments. New KPI metrics: safety compliance score, customer service rating, technical proficiency assessment. Review period: July-September 2025. Completion deadline: October 10, 2025. Salary increment budget: ₹2.8 crore (average 8.5% increase).',
           type: 'HR Form'
         },
 
         // Finance Department Documents
         {
           id: 'finance-001',
-          title: 'Q4 Budget Proposal 2025',
+          title: 'Q4 Budget Proposal 2025-26 - Operational Expenditure',
           source: 'File Upload',
           department: 'Finance',
           language: 'English',
           priority: 'high-risk',
           date: new Date(Date.now() - 32400000).toISOString(),
-          author: 'Finance Manager',
-          content: 'Quarterly operational budget proposal...',
+          author: 'Sriram Iyer - Chief Financial Officer',
+          content: 'Q4 operational budget: ₹128.5 crore. Major allocations: staff salaries (45%), maintenance (25%), energy costs (15%), administration (10%), contingency (5%). Revenue projection: ₹95.2 crore from operations, ₹40 crore government subsidy. Board approval required by October 8, 2025.',
           type: 'Budget Document'
         },
         {
           id: 'finance-002',
-          title: 'Vendor Payment Invoice - MNT-2025-0892',
+          title: 'Vendor Payment Invoice - MNT-2025-0892 - Overdue Notice',
           source: 'Email',
           department: 'Finance',
           language: 'English',
           priority: 'urgent',
           date: new Date(Date.now() - 118800000).toISOString(),
-          author: 'Accounts Team',
-          content: 'Overdue payment notice for maintenance contractor...',
+          author: 'Accounts Payable Team - Lakshmi Menon',
+          content: 'Payment overdue to M/s. Kerala Rail Infrastructure Ltd. Invoice amount: ₹12,45,000 for track maintenance materials. Due date: September 15, 2025. Overdue by: 16 days. Late payment penalty: ₹1,245 per day. Vendor threatening service suspension. Payment authorization required urgently.',
           type: 'Invoice'
         },
         {
           id: 'finance-003',
-          title: 'GST Returns September 2025',
+          title: 'GST Returns September 2025 - GSTIN: 32AABCK7654M1Z5',
           source: 'Web Portal',
           department: 'Finance',
           language: 'English',
           priority: 'normal',
           date: new Date(Date.now() - 205200000).toISOString(),
-          author: 'Tax Officer',
-          content: 'Monthly GST filing documentation...',
+          author: 'Suresh Kumar - Tax Officer',
+          content: 'Monthly GST filing for September 2025. Gross receipts: ₹8.5 crore, GST collected: ₹45.9 lakh, Input tax credit: ₹32.1 lakh, Net GST payable: ₹13.8 lakh. Filing deadline: October 20, 2025. E-way bills generated: 1,247. Return filing software updated to latest version.',
           type: 'Tax Document'
         },
 
         // Operations Department Documents
         {
           id: 'operations-001',
-          title: 'New Train Service Update - പുതിയ ട്രെയിൻ സേവന അപ്ഡേറ്റ്',
+          title: 'New Train Service Update - Aluva-Thripunithura Extension',
           source: 'Web Portal',
           department: 'Operations',
           language: 'Hybrid',
           priority: 'urgent',
           date: new Date(Date.now() - 86400000).toISOString(),
-          author: 'Operations Team',
-          content: 'അമൃത് ഗേറ്റ് സ്റ്റേഷന്റെ പുതിയ ട്രെയിൻ സേവന അപ്ഡേറ്റ് - New train service starts at Amrut Gate Station...',
+          author: 'Vishnu Prasad - Operations Manager',
+          content: 'പുതിയ ട്രെയിൻ സേവനം: അലുവ-തൃപ്പൂണിത്തുറ റൂട്ടിൽ 6 മിനിറ്റ് ഇടവേളയിൽ സർവീസ് - New train service on Aluva-Thripunithura route with 6-minute frequency during peak hours. Service starts: October 5, 2025. Additional rolling stock: 4 coaches. Expected daily ridership: 45,000 passengers. Revenue projection: ₹2.8 lakh per day.',
           type: 'Service Update'
         },
         {
           id: 'operations-002',
-          title: 'Passenger Traffic Report September 2025',
+          title: 'Passenger Traffic Report September 2025 - Route Performance Analysis',
           source: 'File Upload',
           department: 'Operations',
           language: 'English',
           priority: 'normal',
           date: new Date(Date.now() - 172800000).toISOString(),
-          author: 'Operations Manager',
-          content: 'Monthly passenger capacity analysis and recommendations...',
+          author: 'Anitha Krishnan - Traffic Planning Officer',
+          content: 'Monthly ridership: 28.5 lakh passengers (15% increase from August). Peak hour loading: 110% on Line 1, 85% on Line 2. Revenue collection: ₹18.2 crore. Most crowded stations: Ernakulam South (8.2 lakh), Aluva (6.5 lakh). Recommendations: increase frequency during 8-10 AM, deploy additional crowd management staff.',
           type: 'Traffic Report'
         },
         {
           id: 'operations-003',
-          title: 'Signal Maintenance Schedule - Central Station',
+          title: 'Signal Maintenance Schedule - Central Station Control Room',
           source: 'Email',
           department: 'Operations',
           language: 'English',
           priority: 'normal',
           date: new Date(Date.now() - 259200000).toISOString(),
-          author: 'Signal Engineer',
-          content: 'Quarterly signal system maintenance schedule...',
+          author: 'Rajesh Nair - Signal & Telecom Engineer',
+          content: 'Quarterly signal system maintenance at Central Control Room scheduled for October 12-13, 2025 (2:00 AM - 6:00 AM). Work scope: software updates for 24 signal controllers, hardware inspection of relay panels, backup system testing. Service disruption: 15 minutes maximum. Maintenance cost: ₹4.5 lakh.',
           type: 'Maintenance Schedule'
         },
 
@@ -859,9 +859,9 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
           <h2 className="text-lg font-semibold">Filters & Search</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
           {/* Search */}
-          <div className="space-y-2">
+          <div className="space-y-2 sm:col-span-2 lg:col-span-1">
             <label className="text-sm font-medium text-gray-700">Search</label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -869,7 +869,7 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
                 placeholder="Search documents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 w-full"
               />
             </div>
           </div>
@@ -878,7 +878,7 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Source</label>
             <Select value={selectedSource} onValueChange={setSelectedSource}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="All Sources" />
               </SelectTrigger>
               <SelectContent>
@@ -895,7 +895,7 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Language</label>
             <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="All Languages" />
               </SelectTrigger>
               <SelectContent>
@@ -1009,44 +1009,50 @@ ${filteredDocs.slice(0, 5).map(doc => `• ${doc.title} (${doc.department})`).jo
             {filteredDocuments.map((doc) => (
               <div
                 key={doc.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer"
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border rounded-lg hover:bg-muted/50 hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer gap-3 sm:gap-0"
                 onClick={() => onDocumentSelect?.(doc.originalDoc || doc)}
               >
-                <div className="flex items-center gap-4 flex-1">
-                  <div className="flex-shrink-0">
+                <div className="flex items-start sm:items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                  <div className="flex-shrink-0 mt-1 sm:mt-0">
                     {getPriorityIcon(doc.priority)}
                   </div>
                   <div className="space-y-2 flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-900 truncate">{doc.title}</h4>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(doc.date).toLocaleDateString()}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Building2 className="h-3 w-3" />
-                        {doc.department}
-                      </span>
-                      <Badge variant="outline" className="text-xs">
-                        {doc.source}
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {doc.language}
-                      </Badge>
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base leading-tight">{doc.title}</h4>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(doc.date).toLocaleDateString()}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Building2 className="h-3 w-3" />
+                          {doc.department}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Badge variant="outline" className="text-xs">
+                          {doc.source}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {doc.language}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <Badge className={`text-xs ${getPriorityColor(doc.priority)}`}>
-                    {doc.priority.replace('-', ' ').toUpperCase()}
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    {doc.type}
-                  </Badge>
+                <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 flex-shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Badge className={`text-xs ${getPriorityColor(doc.priority)}`}>
+                      {doc.priority.replace('-', ' ').toUpperCase()}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs hidden sm:inline-flex">
+                      {doc.type}
+                    </Badge>
+                  </div>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="sm" title="View Document">
-                      <Eye className="h-4 w-4" />
+                    <Button variant="ghost" size="sm" title="View Document" className="h-8 w-8 p-0">
+                      <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                     <Button variant="ghost" size="sm" title="Download">
                       <Download className="h-4 w-4" />

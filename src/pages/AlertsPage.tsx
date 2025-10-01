@@ -27,175 +27,175 @@ const AlertsPage = () => {
     // Safety Department
     {
       id: "SA-001",
-      title: "Safety Bulletin Deadline - March 12, 2025",
-      description: "Critical safety documentation review required before implementation of new track safety protocols.",
+      title: "Safety Bulletin Deadline - Fire Safety Compliance SB/2025/089",
+      description: "Critical safety documentation review required for fire safety systems at 6 underground stations. NFPA compliance audit scheduled October 12, 2025. Non-compliance may result in ₹5 lakh penalty and service suspension.",
       department: "Safety",
       timeAgo: "2 hours ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Safety Protocol Rev 2.1",
+      documentTitle: "Fire Safety Protocol Rev 2.1 - NFPA Standards",
       action: "Resolve"
     },
     {
       id: "SA-002",
-      title: "Emergency Drill Report Pending",
-      description: "Monthly emergency evacuation drill report must be submitted within 48 hours.",
+      title: "Emergency Drill Report Pending - Ernakulam Junction",
+      description: "Monthly emergency evacuation drill report for Ernakulam Junction Station overdue by 48 hours. RITES audit compliance requires submission within 72 hours. Involves 45 station staff and 12 security personnel.",
       department: "Safety",
       timeAgo: "6 hours ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "Emergency Drill Report - Sept 2025",
+      documentTitle: "Emergency Drill Report - Sept 2025 - ERN/JN/001",
       action: "Resolve"
     },
     {
       id: "SA-003",
-      title: "Track Inspection Overdue",
-      description: "Weekly track safety inspection for Sector 7 is 3 days overdue. Immediate action required.",
+      title: "Track Inspection Overdue - Sector 7 (KM 15.2-18.5)",
+      description: "Weekly track safety inspection for 3.3 km section between Kalamassery-Aluva is 3 days overdue. Track speed restricted to 65 kmph. Critical rail joint inspection required at KM 15.2 near Companypady Bridge.",
       department: "Safety",
       timeAgo: "3 days ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Track Inspection Checklist",
+      documentTitle: "Track Inspection Checklist - Sector 7 - TSI/2025/007",
       action: "Resolve"
     },
 
     // Legal Department
     {
       id: "LE-001",
-      title: "Environmental Permit Renewal Due",
-      description: "Environmental clearance documentation needs renewal before April 15, 2025.",
+      title: "Environmental Permit Renewal Due - NOC/2025/ENV/089",
+      description: "Environmental clearance from Kerala State Pollution Control Board expires November 15, 2025. Application submitted with ₹2.5 lakh fee. Requires EIA report update and noise pollution assessment for new extension work.",
       department: "Legal",
       timeAgo: "1 day ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "Environmental Clearance",
+      documentTitle: "Environmental Clearance - KSPCB Application",
       action: "Resolve"
     },
     {
       id: "LE-002",
-      title: "Contract Amendment Required",
-      description: "Vendor contract for electrical maintenance requires immediate amendment due to policy changes.",
+      title: "Contract Amendment Required - ElectroTech Solutions (₹4.2 Cr)",
+      description: "Electrical maintenance vendor contract requires immediate amendment due to GST rate changes and revised IEEE safety standards. Original 3-year contract value ₹4.2 crore. Insurance coverage to be increased to ₹50 lakh.",
       department: "Legal",
       timeAgo: "4 hours ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Vendor Contract - ElectroTech Solutions",
+      documentTitle: "Vendor Contract - ETS/2022/AMN/003 - Amendment",
       action: "Resolve"
     },
     {
       id: "LE-003",
-      title: "Compliance Audit Findings",
-      description: "Legal compliance audit has identified 5 critical issues requiring immediate attention.",
+      title: "RITES Compliance Audit Findings - Action Plan Required",
+      description: "RITES quarterly audit (Sept 15-22, 2025) identified 5 critical non-conformities in signaling protocols and 12 minor observations. Compliance score: 87% (target: 95%). Action plan submission deadline: October 10, 2025.",
       department: "Legal",
       timeAgo: "2 days ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Q3 Compliance Audit Report",
+      documentTitle: "RITES Audit Report Q3-2025 - Compliance Action Plan",
       action: "Resolve"
     },
 
     // HR Department
     {
       id: "HR-001",
-      title: "Staff Training Certification Expiring",
-      description: "Technical staff certifications expire in 30 days. Renewal process must begin immediately.",
+      title: "Staff Training Certification Expiring - IRISET Secunderabad",
+      description: "46 technical staff certifications expire within 30 days: 23 signal technicians, 15 track maintenance, 8 electrical engineers. IRISET training scheduled Oct 10-15. Budget approved: ₹8.2 lakh (travel + accommodation).",
       department: "HR",
       timeAgo: "5 hours ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Training Records 2024",
+      documentTitle: "Training Records 2024 - IRISET Certification Renewal",
       action: "Resolve"
     },
     {
       id: "HR-002",
-      title: "Employee Handbook Update",
-      description: "Annual employee handbook revision must be completed and distributed by month end.",
+      title: "Employee Handbook Update - Version 3.2 Distribution",
+      description: "Annual employee handbook revision (347 pages) incorporating new policies: flexible working hours, extended maternity leave (180 days), revised disciplinary procedures. Malayalam translation pending. Distribution deadline: Oct 31, 2025.",
       department: "HR",
       timeAgo: "1 day ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "Employee Handbook 2025",
+      documentTitle: "Employee Handbook 2025 - Version 3.2 - Final Draft",
       action: "Resolve"
     },
     {
       id: "HR-003",
-      title: "Performance Review Cycle",
-      description: "Q3 performance reviews for 45 employees are pending completion. Deadline: October 5th.",
+      title: "Performance Review Cycle - 347 Employees Pending",
+      description: "Q3 performance reviews pending for 347 employees across all departments. New KPI metrics include safety compliance, customer service rating. Completion deadline: October 10, 2025. Salary increment budget: ₹2.8 crore (avg 8.5%).",
       department: "HR",
       timeAgo: "8 hours ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "Q3 Performance Review Template",
+      documentTitle: "Q3 Performance Review Template - Appraisal Cycle 2025",
       action: "Resolve"
     },
 
     // Finance Department
     {
       id: "FN-001",
-      title: "Budget Approval Pending",
-      description: "Q4 operational budget requires executive approval before October 1st deadline.",
+      title: "Q4 Budget Approval Pending - ₹128.5 Crore Operational Budget",
+      description: "Q4 operational budget (₹128.5 crore) requires board approval by October 8, 2025. Major allocations: staff salaries (45%), maintenance (25%), energy (15%). Revenue projection: ₹95.2 crore operations + ₹40 crore govt subsidy.",
       department: "Finance",
       timeAgo: "3 hours ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Q4 Budget Proposal 2025",
+      documentTitle: "Q4 Budget Proposal 2025-26 - Board Presentation",
       action: "Resolve"
     },
     {
       id: "FN-002",
-      title: "Vendor Payment Overdue",
-      description: "Payment to maintenance contractor is 15 days overdue. Risk of service suspension.",
+      title: "Vendor Payment Overdue - Kerala Rail Infrastructure (₹12.45 L)",
+      description: "Payment to M/s. Kerala Rail Infrastructure Ltd overdue by 16 days. Invoice amount: ₹12,45,000 for track maintenance materials. Late penalty: ₹1,245/day. Vendor threatening service suspension. Authorization required urgently.",
       department: "Finance",
       timeAgo: "1 day ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Invoice #MNT-2025-0892",
+      documentTitle: "Invoice #MNT-2025-0892 - Payment Authorization",
       action: "Resolve"
     },
     {
       id: "FN-003",
-      title: "Tax Filing Deadline",
-      description: "Monthly GST filing deadline is October 3rd. Documentation review required.",
+      title: "GST Filing Deadline - GSTIN: 32AABCK7654M1Z5",
+      description: "Monthly GST filing deadline October 20, 2025. September 2025 data: Gross receipts ₹8.5 crore, GST collected ₹45.9 lakh, Input credit ₹32.1 lakh, Net payable ₹13.8 lakh. 1,247 e-way bills generated.",
       department: "Finance",
       timeAgo: "2 days ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "GST Returns - September 2025",
+      documentTitle: "GST Returns September 2025 - Filing Documentation",
       action: "Resolve"
     },
 
     // Operations Department
     {
       id: "OP-001",
-      title: "Service Disruption Alert",
-      description: "Planned maintenance on Line 2 requires passenger notification 72 hours in advance.",
+      title: "Service Disruption Alert - Aluva-Thripunithura Extension Launch",
+      description: "New service launch on October 5, 2025 requires passenger notification 72 hours in advance. 6-minute frequency during peak hours. Expected ridership: 45,000/day. Revenue projection: ₹2.8 lakh/day. 4 additional coaches deployed.",
       department: "Operations",
       timeAgo: "4 hours ago",
       priority: "HIGH",
       status: "open",
-      documentTitle: "Maintenance Schedule - Line 2",
+      documentTitle: "Service Launch Plan - Aluva-Thripunithura Route",
       action: "Resolve"
     },
     {
       id: "OP-002",
-      title: "Peak Hour Capacity Review",
-      description: "Monthly passenger capacity analysis shows 15% increase. Infrastructure assessment needed.",
+      title: "Peak Hour Capacity Review - 110% Loading on Line 1",
+      description: "September ridership: 28.5 lakh passengers (15% increase). Peak hour loading exceeded: Line 1 at 110%, Line 2 at 85%. Most crowded: Ernakulam South (8.2L), Aluva (6.5L). Requires frequency increase 8-10 AM.",
       department: "Operations",
       timeAgo: "1 day ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "Passenger Traffic Report - Sept 2025",
+      documentTitle: "Passenger Traffic Analysis Sept 2025 - Capacity Report",
       action: "Resolve"
     },
     {
       id: "OP-003",
-      title: "Signal System Maintenance",
-      description: "Quarterly signal system maintenance for Central Station requires scheduling confirmation.",
+      title: "Signal System Maintenance - Central Control Room",
+      description: "Quarterly maintenance scheduled October 12-13, 2025 (2:00-6:00 AM). Work scope: 24 signal controllers software update, relay panel inspection, backup testing. Max service disruption: 15 minutes. Cost: ₹4.5 lakh.",
       department: "Operations",
       timeAgo: "6 hours ago",
       priority: "MEDIUM",
       status: "open",
-      documentTitle: "Signal Maintenance Protocol",
+      documentTitle: "Signal Maintenance Protocol - Central Control Room",
       action: "Resolve"
     },
 
@@ -757,32 +757,32 @@ const AlertsPage = () => {
                 </TabsList>
 
                 {/* Alerts & Notifications Tab */}
-                <TabsContent value="alerts" className="space-y-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <TabsContent value="alerts" className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 sm:gap-6">
                     {/* Main Content - Left Side (3/4) */}
-                    <div className="lg:col-span-3 space-y-6">
+                    <div className="xl:col-span-3 space-y-4 sm:space-y-6">
                       {/* Timeline Navigation */}
-                      <Card className="p-6">
-                        <div className="flex items-center justify-between mb-4">
+                      <Card className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
                           <h3 className="text-lg font-semibold">Next 30 Days Timeline</h3>
-                          <Button variant="outline" size="sm" onClick={exportCSV}>
+                          <Button variant="outline" size="sm" onClick={exportCSV} className="w-full sm:w-auto">
                             <Download className="h-4 w-4 mr-2" />
                             Export CSV
                           </Button>
                         </div>
-                        <div className="flex items-center space-x-4">
-                          <Button variant="ghost" size="sm">
+                        <div className="flex items-center space-x-2 sm:space-x-4">
+                          <Button variant="ghost" size="sm" className="flex-shrink-0">
                             <ChevronLeft className="h-4 w-4" />
                           </Button>
-                          <div className="flex space-x-1 overflow-x-auto flex-1">
+                          <div className="flex space-x-1 overflow-x-auto flex-1 pb-2">
                             {calendarData.map((day, index) => (
-                              <div key={index} className={`flex flex-col items-center p-3 rounded-lg min-w-[60px] text-center ${
+                              <div key={index} className={`flex flex-col items-center p-2 sm:p-3 rounded-lg min-w-[50px] sm:min-w-[60px] text-center ${
                                 day.isToday ? 'bg-blue-100 border-2 border-blue-300' : 
                                 day.isHighlighted ? 'bg-red-100 border-2 border-red-300' : 
                                 'bg-gray-50 hover:bg-gray-100'
                               }`}>
                                 <span className="text-xs text-gray-600 mb-1">{day.dayName}</span>
-                                <span className={`font-bold ${day.isToday ? 'text-blue-700' : day.isHighlighted ? 'text-red-700' : 'text-gray-800'}`}>
+                                <span className={`text-sm sm:text-base font-bold ${day.isToday ? 'text-blue-700' : day.isHighlighted ? 'text-red-700' : 'text-gray-800'}`}>
                                   {day.dayNumber}
                                 </span>
                                 {day.events > 0 && (
@@ -795,17 +795,17 @@ const AlertsPage = () => {
                               </div>
                             ))}
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="flex-shrink-0">
                             <ChevronRight className="h-4 w-4" />
                           </Button>
                         </div>
                       </Card>
 
                       {/* Filters */}
-                      <Card className="p-4">
-                        <div className="flex items-center gap-4">
+                      <Card className="p-3 sm:p-4">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                           <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-                            <SelectTrigger className="w-48">
+                            <SelectTrigger className="w-full sm:w-48">
                               <SelectValue placeholder="All Departments" />
                             </SelectTrigger>
                             <SelectContent>
@@ -817,17 +817,17 @@ const AlertsPage = () => {
                             </SelectContent>
                           </Select>
                           
-                          <div className="relative flex-1 max-w-md">
+                          <div className="relative flex-1 min-w-0">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <Input
                               placeholder="Search alerts..."
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
-                              className="pl-10"
+                              className="pl-10 w-full"
                             />
                           </div>
 
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 whitespace-nowrap">
                             <Checkbox
                               id="critical-only"
                               checked={criticalOnly}
@@ -847,37 +847,39 @@ const AlertsPage = () => {
                             alert.priority === 'HIGH' ? 'border-l-red-500 bg-red-50' : 'border-l-blue-500 bg-blue-50'
                           }`}>
                             <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-3">
-                                  <span className="text-sm font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded">
-                                    {alert.id}
-                                  </span>
-                                  <h3 className="font-semibold text-lg text-gray-900">{alert.title}</h3>
-                                  <Badge 
-                                    variant={alert.priority === 'HIGH' ? 'destructive' : 'secondary'}
-                                    className={alert.priority === 'HIGH' ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200'}
-                                  >
-                                    {alert.priority}
-                                  </Badge>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
+                                  <div className="flex items-center gap-2 sm:gap-3">
+                                    <span className="text-xs sm:text-sm font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                                      {alert.id}
+                                    </span>
+                                    <Badge 
+                                      variant={alert.priority === 'HIGH' ? 'destructive' : 'secondary'}
+                                      className={`${alert.priority === 'HIGH' ? 'bg-red-100 text-red-800 border-red-200' : 'bg-blue-100 text-blue-800 border-blue-200'} flex-shrink-0`}
+                                    >
+                                      {alert.priority}
+                                    </Badge>
+                                  </div>
+                                  <h3 className="font-semibold text-base sm:text-lg text-gray-900 leading-tight">{alert.title}</h3>
                                 </div>
-                                <p className="text-gray-700 mb-4 leading-relaxed">{alert.description}</p>
-                                <div className="flex items-center gap-6 text-sm text-gray-600 mb-3">
+                                <p className="text-gray-700 mb-4 leading-relaxed text-sm sm:text-base">{alert.description}</p>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-xs sm:text-sm text-gray-600 mb-3">
                                   <span className="flex items-center gap-2">
-                                    <Building2 className="h-4 w-4" />
-                                    {alert.department}
+                                    <Building2 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                    <span className="truncate">{alert.department}</span>
                                   </span>
                                   <span className="flex items-center gap-2">
-                                    <Clock className="h-4 w-4" />
-                                    {alert.timeAgo}
+                                    <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                    <span className="truncate">{alert.timeAgo}</span>
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                  <FileText className="h-4 w-4 text-gray-500" />
-                                  <span className="text-sm text-gray-600">{alert.documentTitle}</span>
+                                <div className="flex items-start gap-2">
+                                  <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 flex-shrink-0 mt-0.5" />
+                                  <span className="text-xs sm:text-sm text-gray-600 leading-relaxed">{alert.documentTitle}</span>
                                 </div>
                               </div>
-                              <div className="ml-6">
-                                <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                              <div className="ml-0 sm:ml-6 mt-4 sm:mt-0">
+                                <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
                                   Resolve
                                 </Button>
                               </div>
