@@ -1,9 +1,9 @@
 function fetchData(){
-    return new Promise((reslove,reject) => {
+    return new Promise((resolve,reject) => {
 
     });
     }
-async fetchDataData(){
+async function fetchDataData(){
         try {
            console.log("Data Fetched"); 
         } catch (error) {
